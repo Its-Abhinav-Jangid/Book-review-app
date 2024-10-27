@@ -14,21 +14,37 @@ const db = new pg.Client({
 
 db.connect();
 
+async function getBooks(book_id) {
+  let book;
+  let book_notes;
+  if (book_id) {
+    book = await db.query("SELECT * FROM books WHERE id = $1", [book_id]);
+    book_notes = await db.query("SELECT * FROM book_notes WHERE book_id = $1", [
+      book_id,
+    ]);
+  } else {
+    book = await db.query("SELECT * FROM books");
+    book_notes = await db.query("SELECT * FROM book_notes ");
+  }
+  return { books: book.rows, book_notes: book_notes.rows };
+}
+
+console.log(await getBooks());
+
 const app = express();
 const port = 3000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/", async (req, res) => {
-  const books = await db.query("SELECT * FROM books");
-  const book_notes = await db.query("SELECT * FROM book_notes");
-  res.json({ books: books.rows, book_notes: book_notes.rows });
+  const data = await getBooks();
+
+  res.json(data);
 });
 
 app.get("/book/:id", async (req, res) => {
-  const book_id = req.params.id;
-  const book = (await db.query("SELECT * FROM books WHERE id = $1", [book_id]))
-    .rows;
+  const book_id = parseInt(req.params.id);
+  const book = await getBooks(book_id);
   res.json(book);
 });
 
@@ -70,7 +86,7 @@ app.put("/book/:id", async (req, res) => {
     book_id,
   ]);
 
-  res.json(updatedBook);
+  res.json(updatedBook.rows);
 });
 
 app.delete("/book", async (req, res) => {
