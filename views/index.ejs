@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/general.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="homepage">
+      <div class="welcome-section">
+        <h2>Welcome back, <span class="username">Abhinav</span>!</h2>
+        <p>You’ve reviewed <span class="books-reviewed">12</span> books</p>
+        <p>
+          Latest Review:
+          <span class="latest-book">The Pragmatic Programmer</span>
+        </p>
+      </div>
+
+      <div class="your-book-list">
+        <h3>Your Book List</h3>
+        <div class="book-grid">
+          <div class="book-card">
+            <div class="image-container">
+              <img
+                src="https://www.informit.com/ShowCover.aspx?isbn=0135957052"
+                alt="Book Cover"
+                class="book-cover"
+              />
+              <div class="dark-overlay"></div>
+            </div>
+            <div class="book-info">
+              <h3 class="book-title">Book Title</h3>
+              <p class="book-author">Author Name</p>
+            </div>
+          </div>
+          <div class="book-card">
+            <div class="image-container">
+              <img
+                src="https://www.informit.com/ShowCover.aspx?isbn=0135957052"
+                alt="Book Cover"
+                class="book-cover"
+              />
+              <div class="dark-overlay"></div>
+            </div>
+            <div class="book-info">
+              <h3 class="book-title">Book Title</h3>
+              <p class="book-author">Author Name</p>
+            </div>
+          </div>
+          <div class="book-card">
+            <div class="image-container">
+              <img
+                src="https://www.informit.com/ShowCover.aspx?isbn=0135957052"
+                alt="Book Cover"
+                class="book-cover"
+              />
+              <div class="dark-overlay"></div>
+            </div>
+            <div class="book-info">
+              <h3 class="book-title">Book Title</h3>
+              <p class="book-author">Author Name</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Repeat book-card for more books -->
+      </div>
+    </div>
+    <div class="add-book-cta">
+      <button class="cta-button" onclick="location.href='/add-book'">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 4v16m8-8H4"
+          />
+        </svg>
+      </button>
+    </div>
+  </body>
+</html>

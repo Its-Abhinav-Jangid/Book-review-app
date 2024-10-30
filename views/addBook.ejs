@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add New Book</title>
+
+    <link rel="stylesheet" href="css/addBook.css" />
+  </head>
+  <body>
+    <div class="add-book-container">
+      <h2>Add a New Book</h2>
+      <p class="instructions">
+        Search for a book by title and click "Add" to include it in your list.
+      </p>
+      <form action="/add-book" method="get">
+        <div class="search-bar">
+          <input
+            type="text"
+            id="bookTitle"
+            name="q"
+            placeholder="Enter book name..."
+          />
+          <button id="searchButton" type="submit">Search</button>
+        </div>
+      </form>
+
+      <div id="results" class="results-container">
+        <% if (books.length) { %> <% books.forEach(book => { %>
+        <div class="book-card">
+          <img
+            class="book-cover"
+            <img
+            class="book-cover"
+            src="<%= book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.thumbnail : '/images/default-cover.jpg' %>"
+          />
+
+          <div class="book-details">
+            <h3 class="book-title"><%= book.volumeInfo.title %></h3>
+            <p class="book-author">
+              <%= book.volumeInfo.authors ? book.volumeInfo.authors.join(', ') :
+              'Unknown Author' %>
+            </p>
+            <p class="book-description">
+              <%=book.volumeInfo.description ? book.volumeInfo.description :
+              ''%>
+            </p>
+
+            <button
+              class="add-button"
+              onclick="addBook('<%= book.volumeInfo.title %>')"
+            >
+              Add
+            </button>
+          </div>
+        </div>
+        <% }) %> <% } else { %>
+        <p></p>
+        <% } %>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

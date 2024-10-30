@@ -4,6 +4,9 @@ import axios from "axios";
 import bodyParser from "body-parser";
 import pg from "pg";
 
+const googleBooksAPI = "https://www.googleapis.com/books/v1";
+const googleBooksAPIKey = "AIzaSyBHlz8SKuMETU9xu1d0JlAqRCyqyYiLZCw";
+
 const db = new pg.Client({
   database: "book_reviews",
   host: "localhost",
@@ -29,17 +32,17 @@ async function getBooks(book_id) {
   return { books: book.rows, book_notes: book_notes.rows };
 }
 
-console.log(await getBooks());
-
 const app = express();
 const port = 3000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use(express.static("public"));
+
 app.get("/", async (req, res) => {
   const data = await getBooks();
 
-  res.json(data);
+  res.render("index.ejs", data);
 });
 
 app.get("/book/:id", async (req, res) => {
@@ -98,6 +101,46 @@ app.delete("/book", async (req, res) => {
   res.status(200).json({ message: "book deleted" });
 });
 
+app.get("/add-book", async (req, res) => {
+  const query = req.query.q;
+
+  if (query) {
+    try {
+      const response = await axios.get(
+        `https://www.googleapis.com/books/v1/volumes?q=intitle:${query}`
+      );
+
+      const books = response.data.items;
+      books.map((book) => {
+        if (book.volumeInfo.description) {
+          if (book.volumeInfo.description.length > 250) {
+            book.volumeInfo.description =
+              book.volumeInfo.description.slice(0, 250) + "...";
+          }
+        }
+        return book;
+      });
+
+      res.render("addBook.ejs", { books });
+    } catch (error) {
+      console.error("Error fetching books:", error);
+      res.status(500).send("Error fetching books");
+    }
+  } else {
+    res.render("addBook.ejs", { books: [] });
+  }
+});
+
+app.get("/search", async (req, res) => {
+  const query = req.query.q;
+
+  const books = await axios.get(
+    `https://www.googleapis.com/books/v1/volumes?q=intitle:${query}
+`
+  );
+
+  res.json(books.data.items);
+});
 app.listen(port, () => {
   console.log(`App running on http://localhost:${port}`);
 });

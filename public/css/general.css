@@ -1,0 +1,235 @@
+/* General Styles */
+body {
+  background-color: #1c1c1e;
+  font-family: Arial, sans-serif;
+  color: #e0e0e0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+/* Homepage Container */
+.homepage {
+  display: flex;
+  flex-direction: column; /* Stack the sections vertically */
+  align-items: center; /* Center items horizontally */
+  margin: 0; /* Remove any default margin */
+  width: 100%; /* Set full width */
+  max-width: 100vw; /* Ensure it does not exceed the viewport width */
+  padding: 20px; /* Optional: Add padding to the sides */
+  box-sizing: border-box; /* Include padding in the element's total width */
+}
+
+/* Welcome Section */
+/* Welcome Section */
+.welcome-section {
+  background: linear-gradient(
+    to right,
+    #1e8fff24,
+    #ff69c32e
+  ); /* Optional: Add a background image */
+  padding: 40px; /* Increase padding for a spacious look */
+  border-radius: 8px; /* Rounded corners */
+  text-align: center; /* Center text */
+  color: #e0e0e0; /* Text color */
+  width: 100%; /* Full width of the parent container */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Shadow for depth */
+  margin-bottom: 20px; /* Space below the section */
+  position: relative; /* Allows pseudo-elements if needed */
+}
+
+/* Optional: Text Styles */
+.welcome-section h2 {
+  font-size: 24px; /* Increase font size */
+  margin: 0; /* Remove margin */
+}
+
+.welcome-section p {
+  font-size: 16px; /* Font size for paragraphs */
+  margin: 5px 0; /* Space between paragraphs */
+}
+
+/* Highlighting Dynamic Data */
+.username {
+  color: #ffcc00; /* Different color for the username */
+  font-weight: bold; /* Bold for emphasis */
+}
+
+.books-reviewed,
+.latest-book {
+  color: #ffcc00; /* Different color for dynamic data */
+  font-weight: bold; /* Bold for emphasis */
+}
+
+/* Optional Gradient Background */
+
+/* Your Book List */
+.your-book-list {
+  width: 100%; /* Full width of parent container */
+  max-width: 1000px; /* Optional: limit the width */
+  text-align: center; /* Center text */
+}
+
+/* Book List Section */
+.book-list-section {
+  margin-top: 20px;
+}
+
+.book-list-section h3 {
+  font-size: 22px;
+  color: #e0e0e0;
+  margin-bottom: 16px;
+}
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 32px;
+}
+
+/* Book Card */
+.book-card {
+  position: relative;
+  background-color: #2a2a2d;
+  width: 300px;
+  padding: 8px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out,
+    border 0.3s;
+  border: 2px solid #3a3a3d;
+  cursor: pointer;
+}
+
+.book-card:hover {
+  transform: scale(1.05) rotate(1deg);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+  border: 2px solid;
+  border-image: linear-gradient(45deg, #1e8fffce, #ff69b4be);
+  border-image-slice: 1;
+}
+
+/* Image Container */
+.image-container {
+  position: relative;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.book-cover {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.3s ease-in-out;
+}
+
+.book-card:hover .book-cover {
+  transform: scale(1.3);
+}
+
+/* Dark Overlay */
+.dark-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  border-radius: 6px;
+}
+
+.book-card:hover .dark-overlay {
+  opacity: 1;
+}
+
+/* Book Info Overlay */
+.book-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
+  padding: 20px;
+  color: #e0e0e0;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.book-card:hover .book-info {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Enhanced Book Title */
+.book-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
+  padding-bottom: 8px;
+  color: #e0e0e0;
+  text-align: center;
+
+  letter-spacing: 1px;
+  position: relative;
+}
+
+.book-title::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -2px;
+  transform: translateX(-50%);
+  width: 40%;
+  height: 2px;
+  background-color: #ff69b4;
+  border-radius: 2px;
+  transition: width 0.3s ease-in-out;
+}
+
+.book-card:hover .book-title::after {
+  width: 80%;
+}
+
+/* Book Author */
+.book-author {
+  font-size: 14px;
+  color: #a9a9a9;
+  margin-top: 4px;
+  text-align: center;
+  opacity: 0.9;
+}
+/* Add New Book CTA */
+.add-book-cta {
+  position: fixed; /* Position the button fixed in the viewport */
+  bottom: 20px; /* Distance from the bottom */
+  right: 20px; /* Distance from the right */
+  z-index: 1000; /* Ensure it stays on top of other elements */
+}
+
+.cta-button {
+  background: linear-gradient(
+    135deg,
+    #6e8efb,
+    #a77bff
+  ); /* Gradient background */
+  color: #ffffff; /* White icon color */
+  border: none; /* No border */
+  border-radius: 50%; /* Round shape */
+  width: 56px; /* Width of the button */
+  height: 56px; /* Height of the button */
+  display: flex; /* Center the SVG icon */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Shadow for depth */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: transform 0.3s; /* Smooth transition */
+}
+
+.cta-button:hover {
+  transform: scale(1.1); /* Slightly enlarge the button on hover */
+}
