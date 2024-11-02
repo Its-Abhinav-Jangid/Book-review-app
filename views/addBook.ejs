@@ -8,33 +8,34 @@
     <link rel="stylesheet" href="css/addBook.css" />
   </head>
   <body>
-    <!-- Updated Modal Structure -->
-<div id="modal" class="modal">
-  <div class="modal-content">
-    <span class="close-btn" onclick="closeModal()">&times;</span>
-    <h2>Book Title</h2>
-    
-    <div class="book-details-modal">
-      <p><strong>Author:</strong> John Doe</p>
-      <p><strong>Genre:</strong> Mystery, Thriller</p>
-      <p><strong>Published:</strong> 2022</p>
-      <p><strong>Pages:</strong> 320</p>
-      <p><strong>Publisher:</strong> Penguin Books</p>
+    <div id="modal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <h2 id="modal-title">Book Title</h2> <!-- Added id for dynamic title -->
+        
+        <div class="book-details-modal">
+          <p><strong>Author:</strong> <span id="modal-author">John Doe</span></p> <!-- Added id for dynamic author -->
+          <p><strong>Genre:</strong> <span id="modal-genre">Mystery, Thriller</span></p> <!-- Added id for dynamic genre -->
+          <p><strong>Published:</strong> <span id="modal-published">2022</span></p> <!-- Added id for dynamic published date -->
+          <p><strong>Pages:</strong> <span id="modal-pages">320</span></p> <!-- Added id for dynamic page count -->
+          <p><strong>Publisher:</strong> <span id="modal-publisher">Penguin Books</span></p> <!-- Added id for dynamic publisher -->
+        </div>
+        
+        <div class="book-summary">
+          <h3>Summary</h3>
+          <p id="modal-summary">This book dives into a thrilling story...</p> <!-- Added id for dynamic summary -->
+        </div>
+        
+        <div class="rating">
+          <h3>Rating</h3>
+          <span id="modal-rating">★★★★☆</span> <!-- Added id for dynamic rating -->
+        </div>
+        <div class="more-info">
+          <a id="modal-link" href="#" target="_blank" style="  color: #4db8ff;">More Info on Google Books</a> <!-- Added link for more info -->
+        </div>
+      </div>
     </div>
     
-    <div class="book-summary">
-      <h3>Summary</h3>
-      <p>This book dives into a thrilling story...</p>
-    </div>
-    
- 
-
-    <div class="rating">
-      <h3>Rating</h3>
-      <span>★★★★☆</span> <!-- Replace this with dynamic rating input -->
-    </div>
-  </div>
-</div>
 
     <div class="add-book-container">
       <h2>Add a New Book</h2>
@@ -81,7 +82,7 @@
             >
               Add
             </button>
-            <button class="btn view-btn" onclick="openModal()">View</button>
+            <button class="btn view-btn" onclick="openModal('<%=book.id%>')">View</button>
           </div>
         </div>
         <% }) %> <% } else { %>
@@ -89,9 +90,22 @@
         <% } %>
       </div>
     </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script >// JavaScript for Opening and Closing Modal
-      function openModal() {
+
+      async function openModal(id) {
+        const response = await axios.get(`/api/book/${id}`)
+        console.log(response)
+        const data = response.data
+        document.getElementById("modal-title").textContent = data.volumeInfo.title || "N/A";
+        document.getElementById("modal-author").textContent = data.volumeInfo.authors ? data.volumeInfo.authors.join(", ") : "N/A";
+        document.getElementById("modal-genre").textContent = data.volumeInfo.categories ? data.volumeInfo.categories.join(", ") : "N/A";
+        document.getElementById("modal-published").textContent = data.volumeInfo.publishedDate || "N/A";
+        document.getElementById("modal-pages").textContent = data.volumeInfo.pageCount || "N/A";
+        document.getElementById("modal-publisher").textContent = data.volumeInfo.publisher || "N/A";
+        document.getElementById("modal-summary").innerHTML = data.volumeInfo.description || "No summary available.";
+        const googleBooksLink = data.volumeInfo.infoLink || "#"; // Fallback if no link is available
+        document.getElementById("modal-link").href = googleBooksLink;
         document.getElementById("modal").style.display = "block";
       }
       

@@ -9,9 +9,11 @@ body {
   align-items: center;
   height: 100vh;
   margin: 0;
+  overflow-y: hidden;
 }
 
 .add-book-container {
+  margin-top: 3rem;
   max-height: 100%;
   width: 100%;
   max-width: 700px;
@@ -72,7 +74,7 @@ h2 {
   overflow-y: auto; /* Enable vertical scrolling */
 }
 
-.results-container::-webkit-scrollbar {
+.results-container::-webkit-scrollbar,.modal::-webkit-scrollbar {
   display: none; /* Safari and Chrome */
 }
 .book-card {
@@ -242,11 +244,20 @@ h2 {
   color: #4db8ff;
   font-weight: 600;
 }
+.modal .rating{
+  margin-bottom: 1rem;
+}
 
 
 
 .book-details p, .book-summary p {
   margin: 5px 0;
 }
-
+.modal .book-summary{
+  padding: 1rem!important;
+  line-height: 1.6; /* Increases spacing between lines */
+  font-size: 16px; /* Increases font size for better readability */
+  padding: 10px 0; /* Adds padding around the summary */
+  color: #fff; /* Sets a darker color for better contrast */
+}
 

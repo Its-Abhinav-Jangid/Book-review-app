@@ -1,4 +1,4 @@
-import express, { query } from "express";
+import express from "express";
 import ejs from "ejs";
 import axios from "axios";
 import bodyParser from "body-parser";
@@ -105,9 +105,34 @@ async function fetchBooks(query) {
     console.error("Error fetching books:", error);
   }
 }
+async function fetchBookById(id) {
+  try {
+    const response = await axios.get(
+      `https://www.googleapis.com/books/v1/volumes/${id}`,
+      { params: { key: googleBooksAPIKey } }
+    );
+    
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching books:", error);
+  }
+}
 
+app.get('/api/book/:id', async (req, res) => {
+  try {
+    const bookId = req.params.id;
+  
+    const bookData = await fetchBookById(bookId);
+ 
+    res.json(bookData); // Send book data back as JSON
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ error: "Failed to fetch book details" });
+  }
+});
 app.get("/", async (req, res) => {
   const data = await getBooks();
+
 
   res.render("index.ejs", data);
 });
