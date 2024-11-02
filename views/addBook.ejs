@@ -8,6 +8,34 @@
     <link rel="stylesheet" href="css/addBook.css" />
   </head>
   <body>
+    <!-- Updated Modal Structure -->
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal()">&times;</span>
+    <h2>Book Title</h2>
+    
+    <div class="book-details-modal">
+      <p><strong>Author:</strong> John Doe</p>
+      <p><strong>Genre:</strong> Mystery, Thriller</p>
+      <p><strong>Published:</strong> 2022</p>
+      <p><strong>Pages:</strong> 320</p>
+      <p><strong>Publisher:</strong> Penguin Books</p>
+    </div>
+    
+    <div class="book-summary">
+      <h3>Summary</h3>
+      <p>This book dives into a thrilling story...</p>
+    </div>
+    
+ 
+
+    <div class="rating">
+      <h3>Rating</h3>
+      <span>★★★★☆</span> <!-- Replace this with dynamic rating input -->
+    </div>
+  </div>
+</div>
+
     <div class="add-book-container">
       <h2>Add a New Book</h2>
       <p class="instructions">
@@ -48,11 +76,12 @@
             </p>
 
             <button
-              class="add-button"
+              class="add-button btn"
               onclick="addBook('<%= book.volumeInfo.title %>')"
             >
               Add
             </button>
+            <button class="btn view-btn" onclick="openModal()">View</button>
           </div>
         </div>
         <% }) %> <% } else { %>
@@ -61,6 +90,21 @@
       </div>
     </div>
 
-    <script src="script.js"></script>
+    <script >// JavaScript for Opening and Closing Modal
+      function openModal() {
+        document.getElementById("modal").style.display = "block";
+      }
+      
+      function closeModal() {
+        document.getElementById("modal").style.display = "none";
+      }
+      
+      // Close modal if clicked outside of content
+      window.onclick = function(event) {
+        if (event.target == document.getElementById("modal")) {
+          closeModal();
+        }
+      };
+      </script>
   </body>
 </html>
