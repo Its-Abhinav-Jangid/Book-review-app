@@ -45,6 +45,7 @@ h2 {
   border-radius: 5px;
   background-color: #333;
   color: #fff;
+  outline: none;
 }
 
 #searchButton {
@@ -68,6 +69,10 @@ h2 {
   margin-top: 20px;
   max-height: 750px; /* Set the max height as per your layout preference */
   overflow-y: auto; /* Enable vertical scrolling */
+}
+
+.results-container::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
 }
 .book-card {
   display: grid;

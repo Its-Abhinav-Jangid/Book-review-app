@@ -1,4 +1,4 @@
-import express from "express";
+import express, { query } from "express";
 import ejs from "ejs";
 import axios from "axios";
 import bodyParser from "body-parser";
@@ -17,6 +17,45 @@ const db = new pg.Client({
 
 db.connect();
 
+const app = express();
+const port = 3000;
+const genres = [
+  "Science Fiction",
+  "Fantasy",
+  "Mystery",
+  "Thriller",
+  "Romance",
+  "Horror",
+  "Historical Fiction",
+  "Adventure",
+  "Biography",
+  "Self-Help",
+  "Philosophy",
+  "Psychology",
+  "Nonfiction",
+  "Memoir",
+  "Science",
+  "Humor",
+  "Poetry",
+  "Drama",
+  "Cooking",
+  "Art",
+  "Travel",
+  "Health",
+  "Politics",
+  "Religion",
+  "True Crime",
+  "Education",
+  "Graphic Novel",
+  "Children",
+  "Sports",
+  "Business",
+];
+
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(express.static("public"));
+
 async function getBooks(book_id) {
   let book;
   let book_notes;
@@ -32,12 +71,40 @@ async function getBooks(book_id) {
   return { books: book.rows, book_notes: book_notes.rows };
 }
 
-const app = express();
-const port = 3000;
+function truncateDescription(books) {
+  return books.map((book) => {
+    if (
+      book.volumeInfo.description &&
+      book.volumeInfo.description.length > 250
+    ) {
+      book.volumeInfo.description =
+        book.volumeInfo.description.slice(0, 250) + "...";
+    }
+    return book;
+  });
+}
 
-app.use(bodyParser.urlencoded({ extended: true }));
+async function fetchBooks(query) {
+  try {
+    const startIndex = Math.floor(Math.random() * 50); // Random start
+    const genre = query || genres[Math.floor(Math.random() * genres.length)];
+    const response = await axios.get(
+      `https://www.googleapis.com/books/v1/volumes?q=${
+        query
+          ? `intitle:${genre}`
+          : `${genre}&startIndex=${startIndex}&maxResults=10`
+      } `,
+      { params: { key: googleBooksAPIKey } }
+    );
 
-app.use(express.static("public"));
+    let books = response.data.items;
+    books = truncateDescription(books);
+
+    return books;
+  } catch (error) {
+    console.error("Error fetching books:", error);
+  }
+}
 
 app.get("/", async (req, res) => {
   const data = await getBooks();
@@ -106,41 +173,21 @@ app.get("/add-book", async (req, res) => {
 
   if (query) {
     try {
-      const response = await axios.get(
-        `https://www.googleapis.com/books/v1/volumes?q=intitle:${query}`
-      );
-
-      const books = response.data.items;
-      books.map((book) => {
-        if (book.volumeInfo.description) {
-          if (book.volumeInfo.description.length > 250) {
-            book.volumeInfo.description =
-              book.volumeInfo.description.slice(0, 250) + "...";
-          }
-        }
-        return book;
-      });
-
-      res.render("addBook.ejs", { books });
+      const books = await fetchBooks(query);
+      res.render("addBook.ejs", { books: books });
     } catch (error) {
-      console.error("Error fetching books:", error);
       res.status(500).send("Error fetching books");
     }
   } else {
-    res.render("addBook.ejs", { books: [] });
+    try {
+      const books = await fetchBooks();
+      res.render("addBook.ejs", { books: books });
+    } catch (error) {
+      res.status(500).send("Error fetching books");
+    }
   }
 });
 
-app.get("/search", async (req, res) => {
-  const query = req.query.q;
-
-  const books = await axios.get(
-    `https://www.googleapis.com/books/v1/volumes?q=intitle:${query}
-`
-  );
-
-  res.json(books.data.items);
-});
 app.listen(port, () => {
   console.log(`App running on http://localhost:${port}`);
 });
