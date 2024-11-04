@@ -8,14 +8,42 @@
   </head>
   <body>
     <div class="homepage">
-      <div class="welcome-section">
-        <h2>Welcome back, <span class="username">Abhinav</span>!</h2>
-        <p>You’ve reviewed <span class="books-reviewed">12</span> books</p>
-        <p>
-          Latest Review:
-          <span class="latest-book">The Pragmatic Programmer</span>
-        </p>
-      </div>
+      <section class="welcome-section">
+        <div class="welcome-content">
+          <h1>Welcome back, <span id="user-name">Abhinav</span>!</h1>
+          <p>
+            Your personal library, reimagined. Track, rate, and relive your
+            favorite reads.
+          </p>
+          <div class="actions">
+            <button class="action-button">Add New Book</button>
+            <button class="action-button">View Collection</button>
+          </div>
+          <div class="progress">
+            <p>
+              You've added
+              <span id="book-count"><%= books.length %></span> books to your
+              library.
+            </p>
+          </div>
+        </div>
+
+        <div class="quote-section">
+          <div class="quote-icon">📚</div>
+          <h2>Quote of the Day</h2>
+          <div id="quote">
+            <% if(quote){ %> <%- quote %> <% } else{ %>
+            <blockquote>
+              “A room without books is like a body without a soul.” – Cicero
+            </blockquote>
+            <%}%>
+          </div>
+          <p class="tip">
+            Did you know? Reading for just 15 minutes a day can reduce stress by
+            up to 68%.
+          </p>
+        </div>
+      </section>
 
       <div class="your-book-list">
         <h3>Your Book List</h3>

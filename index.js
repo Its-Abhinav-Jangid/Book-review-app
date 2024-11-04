@@ -71,6 +71,16 @@ async function getBooks(book_id) {
   return { books: book.rows, book_notes: book_notes.rows };
 }
 
+async function fetchQuote() {
+  try {
+    const response = await axios.get("https://zenquotes.io/api/random/");
+
+    return response.data[0].h;
+  } catch (err) {
+    console.log(`error fetching quote ${err}`);
+  }
+}
+
 function truncateDescription(books) {
   return books.map((book) => {
     if (
@@ -84,12 +94,12 @@ function truncateDescription(books) {
   });
 }
 
-async function fetchBooks(query) {
+async function fetchBooksAPI(query) {
   try {
     const startIndex = Math.floor(Math.random() * 50); // Random start
     const genre = query || genres[Math.floor(Math.random() * genres.length)];
     const response = await axios.get(
-      `https://www.googleapis.com/books/v1/volumes?q=${
+      `${googleBooksAPI}/volumes?q=${
         query
           ? `intitle:${genre}`
           : `${genre}&startIndex=${startIndex}&maxResults=10`
@@ -103,43 +113,42 @@ async function fetchBooks(query) {
     return books;
   } catch (error) {
     console.error("Error fetching books:", error);
+    res.status(500).send("Error fetching books");
   }
 }
-async function fetchBookById(id) {
+async function fetchBookByIdAPI(id) {
   try {
-    const response = await axios.get(
-      `https://www.googleapis.com/books/v1/volumes/${id}`,
-      { params: { key: googleBooksAPIKey } }
-    );
-    
+    const response = await axios.get(`${googleBooksAPI}/volumes/${id}`, {
+      params: { key: googleBooksAPIKey },
+    });
+
     return response.data;
   } catch (error) {
     console.error("Error fetching books:", error);
   }
 }
 
-app.get('/api/book/:id', async (req, res) => {
+app.get("/api/fetchBookById/:id", async (req, res) => {
   try {
     const bookId = req.params.id;
-  
-    const bookData = await fetchBookById(bookId);
- 
-    res.json(bookData); // Send book data back as JSON
+    const bookData = await fetchBookByIdAPI(bookId);
+
+    res.json(bookData);
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(500).json({ error: "Failed to fetch book details" });
   }
 });
+
 app.get("/", async (req, res) => {
   const data = await getBooks();
-
-
-  res.render("index.ejs", data);
+  const quote = await fetchQuote();
+  res.render("index.ejs", { books: data.books, quote: quote });
 });
 
 app.get("/book/:id", async (req, res) => {
-  const book_id = parseInt(req.params.id);
-  const book = await getBooks(book_id);
+  const bookId = parseInt(req.params.id);
+  const book = await getBooks(bookId);
   res.json(book);
 });
 
@@ -198,14 +207,14 @@ app.get("/add-book", async (req, res) => {
 
   if (query) {
     try {
-      const books = await fetchBooks(query);
+      const books = await fetchBooksAPI(query);
       res.render("addBook.ejs", { books: books });
     } catch (error) {
       res.status(500).send("Error fetching books");
     }
   } else {
     try {
-      const books = await fetchBooks();
+      const books = await fetchBooksAPI();
       res.render("addBook.ejs", { books: books });
     } catch (error) {
       res.status(500).send("Error fetching books");
