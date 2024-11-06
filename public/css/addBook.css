@@ -44,11 +44,12 @@ h2 {
 #bookTitle {
   flex-grow: 1;
   padding: 12px;
-  border: 1px solid #555;
-  border-radius: 5px;
-  background-color: #333;
+
   color: #fff;
   outline: none;
+}
+.bookTitleField {
+  margin-top: 1rem;
 }
 
 #searchButton {
@@ -75,8 +76,9 @@ h2 {
 }
 
 .results-container::-webkit-scrollbar,
-.modal::-webkit-scrollbar {
-  display: none; /* Safari and Chrome */
+.modal::-webkit-scrollbar,
+.modal-content::-webkit-scrollbar {
+  display: none;
 }
 .book-card {
   display: grid;
@@ -178,38 +180,38 @@ h2 {
   box-shadow: 0 0 5px 2px #007bff;
 }
 
-/* Modal CSS */
 .modal {
-  display: none; /* Hidden by default */
+  display: none;
   position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(4px);
-  overflow-y: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.8); /* Dark background with transparency */
+  padding: 20px;
+  width: 80%;
+  max-width: 600px;
+  max-height: 90vh; /* Maximum height of modal */
+  overflow: hidden;
+  border-radius: 8px;
+  z-index: 1000;
+  animation: slideUp 0.5s ease-out; /* Add slide-up animation */
 }
 
 .modal-content {
-  background-color: #1e1e1e;
-  color: #fff;
-  margin: 5% auto;
-  padding: 25px;
-  width: 85%;
-  max-width: 600px;
-  border-radius: 12px;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
-  animation: slideDown 0.4s ease;
+  border-radius: 8px;
+  max-height: 80vh; /* Maximum height for content */
+  overflow-y: auto; /* Scrollable content */
+  padding: 20px;
+  box-sizing: border-box;
+  width: 100%;
 }
-@keyframes slideDown {
+@keyframes slideUp {
   from {
-    transform: translateY(-50px);
+    transform: translate(-50%, 50%); /* Starts from below the viewport */
     opacity: 0;
   }
   to {
-    transform: translateY(0);
+    transform: translate(-50%, -50%); /* Ends at the centered position */
     opacity: 1;
   }
 }
@@ -255,10 +257,199 @@ h2 {
 .modal .book-summary {
   padding: 1rem !important;
   line-height: 1.6; /* Increases spacing between lines */
-  font-size: 16px; /* Increases font size for better readability */
+  font-size: 18px; /* Increases font size for better readability */
   padding: 10px 0; /* Adds padding around the summary */
   color: #fff; /* Sets a darker color for better contrast */
+  font-family: sans-serif;
 }
 #modal-title {
   color: #4db8ff;
+}
+
+/* Modal Styling */
+
+.modal-header,
+.modal-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 10px;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.5em;
+  color: #ffffff;
+}
+
+.close {
+  font-size: 1.5em;
+  color: #cfcfcf;
+  cursor: pointer;
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Adds space between each form field */
+}
+
+.modal-body label {
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.modal-body input,
+.modal-body select,
+.modal-body textarea {
+  background: transparent;
+  border: 1px solid #444;
+  color: #cfcfcf;
+  padding: 10px;
+  border-radius: 4px;
+  width: 100%;
+  font-size: 1em;
+}
+
+.modal-body select:focus {
+  color: #5e5e5e;
+}
+.modal-body input[type="text"],
+.modal-body input[type="number"],
+.modal-body select,
+.modal-body textarea {
+  display: block;
+}
+
+textarea {
+  width: 100%;
+  min-height: 100px; /* Adjust as needed */
+  max-height: 300px; /* Optional: Set a maximum height */
+  overflow-y: auto; /* Show scrollbar when needed */
+  resize: vertical; /* Allow resizing vertically */
+  box-sizing: border-box; /* Ensures padding/border doesn't affect overall size */
+  font-family: sans-serif;
+  font-size: 16px !important;
+  word-wrap: break-word;
+  /* Force hardware acceleration */
+}
+
+textarea::-webkit-scrollbar {
+  width: 6px;
+  display: block;
+}
+
+textarea::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 3px;
+}
+
+textarea::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px; /* Space between buttons */
+}
+
+.btn {
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+.btn.cancel {
+  background: #444;
+  color: #cfcfcf;
+}
+
+.btn.submit {
+  background: #1e90ff;
+  color: #ffffff;
+  border: none;
+}
+#addBookForm {
+  display: flex;
+  flex-direction: column;
+
+  gap: 20px;
+}
+
+/* Floating label styles */
+.form-field {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+  width: 100%;
+  padding: 10px 5px;
+  font-size: 1em;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid #444;
+  color: #cfcfcf;
+  outline: none;
+  transition: border-color 0.3s;
+  box-sizing: border-box; /* Ensure padding is considered in width */
+}
+
+/* Focused input/select/textarea */
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+  border-bottom-color: #1e90ff; /* Highlight color */
+}
+
+/* Label default position */
+.form-field label {
+  position: absolute;
+  top: 10px;
+  left: 5px;
+  color: #888;
+  font-size: 1em;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+/* Label moves up when input/select/textarea is focused or has text */
+.form-field input:focus + label,
+.form-field select:focus + label,
+.form-field textarea:focus + label,
+.form-field input:not(:placeholder-shown):valid + label,
+.form-field select:not(:placeholder-shown):valid + label,
+.form-field textarea:not(:placeholder-shown):valid + label {
+  top: -10px;
+  font-size: 0.85em;
+  color: #1e90ff;
+}
+
+/* Ensure label stays in place when input is empty and unfocused */
+.form-field input:not(:focus):not(:valid):not(:placeholder-shown) + label,
+.form-field select:not(:focus):not(:valid):not(:placeholder-shown) + label,
+.form-field textarea:not(:focus):not(:valid):not(:placeholder-shown) + label {
+  top: 10px;
+  font-size: 1em;
+  color: #888;
+}
+
+/* Add extra padding to prevent clipping with select box */
+.form-field select {
+  appearance: none;
+  background: transparent;
+  padding-top: 20px; /* Add extra padding on top to prevent label clipping */
+}
+
+/* Optional: Add custom arrow for select */
+.form-field select::after {
+  content: "▼";
+  position: absolute;
+  right: 10px;
+  top: calc(50% - 0.5em);
+  pointer-events: none;
 }
