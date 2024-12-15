@@ -54,6 +54,9 @@ async function fillData(data, textContent) {
       parseInt(data.volumeInfo.pageCount) || "";
     document.querySelector("#addBookModal #summary").value =
       data.volumeInfo.description || "";
+    document.querySelector("#addBookModal #isbn").value =
+      data.volumeInfo.industryIdentifiers[0].identifier ||
+      data.volumeInfo.industryIdentifiers[1].identifier;
   }
 }
 

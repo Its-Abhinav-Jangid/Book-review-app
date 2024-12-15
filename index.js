@@ -222,6 +222,10 @@ app.get("/add-book", async (req, res) => {
   }
 });
 
+app.get("/view-book", (req, res) => {
+  res.render("viewBook.ejs");
+});
+
 app.listen(port, () => {
   console.log(`App running on http://localhost:${port}`);
 });

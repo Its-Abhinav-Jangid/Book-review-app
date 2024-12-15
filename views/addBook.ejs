@@ -63,7 +63,7 @@
         </div>
 
         <div class="modal-body">
-          <form id="addBookForm">
+          <form id="addBookForm" method="post" action="/book">
             <div class="form-field bookTitleField">
               <input
                 type="text"
@@ -110,6 +110,17 @@
               <input type="text" id="publisher" required />
               <label for="publisher">Publisher</label>
             </div>
+            <div class="form-field">
+              <input
+                type="number"
+                id="rating"
+                min="1"
+                max="5"
+                required
+                name="rating"
+              />
+              <label for="rating">Rating</label>
+            </div>
 
             <!-- Summary -->
             <div class="form-field">
@@ -117,7 +128,7 @@
               <label for="summary">Summary</label>
             </div>
             <div class="form-field">
-              <textarea id="notes" rows="4" required></textarea>
+              <textarea id="notes" rows="4" required name="notes"></textarea>
               <label for="summary">Notes</label>
             </div>
 
@@ -132,6 +143,7 @@
               ></textarea>
               <label for="rating">Review</label>
             </div>
+            <input type="hidden" name="isbn" id="isbn" />
 
             <!-- Modal Footer with Buttons -->
             <div class="modal-footer">

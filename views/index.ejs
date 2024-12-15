@@ -44,10 +44,11 @@
           </p>
         </div>
       </section>
-
+      <div class="line"></div>
       <div class="your-book-list">
         <h3>Your Book List</h3>
         <div class="book-grid">
+          <% books.forEach(book => { %>
           <div class="book-card">
             <div class="image-container">
               <img
@@ -58,10 +59,13 @@
               <div class="dark-overlay"></div>
             </div>
             <div class="book-info">
-              <h3 class="book-title">Book Title</h3>
-              <p class="book-author">Author Name</p>
+              <h3 class="book-title"><%= book.title %></h3>
+              <p class="book-author"><%= book.author %></p>
             </div>
           </div>
+
+          <%}); %>
+
           <div class="book-card">
             <div class="image-container">
               <img
