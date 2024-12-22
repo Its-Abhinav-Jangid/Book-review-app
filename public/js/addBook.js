@@ -14,8 +14,21 @@ function clearForm() {
 }
 
 async function fillData(data, textContent) {
+  console.log(data)
   // For viewing data (textContent = true)
+  let stars = ""
   if (textContent) {
+    
+    for (let i=1; i <=5; i++) { 
+      
+      if (i <=data.volumeInfo.averageRating) { 
+        stars +=  `<i class="fa-solid fa-star"></i>`
+      } else { 
+          stars += `<i class="fa-regular fa-star"></i>`
+           } 
+            
+        } 
+
     document.getElementById("bookTitle").textContent =
       data.volumeInfo.title || "N/A";
     document.getElementById("author").textContent = data.volumeInfo.authors
@@ -30,11 +43,30 @@ async function fillData(data, textContent) {
       data.volumeInfo.pageCount || "N/A";
     document.getElementById("publisher").textContent =
       data.volumeInfo.publisher || "N/A";
-    document.getElementById("summary").textContent =
+    document.getElementById("summary").innerHTML =
       data.volumeInfo.description || "No summary available.";
+    document.getElementById("modal-rating").innerHTML = stars
   }
   // For adding/editing data (textContent = false)
   else {
+    try {
+      // Send a GET request to the backend
+      const htmlInput = data.volumeInfo.description;
+      const response = await fetch(
+        `http://localhost:3000/htmlToText?html=${htmlInput}`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch data");
+      }
+      const responseData = await response.json(); // Renamed from `data` to `responseData`
+      data.volumeInfo.description = responseData.text;
+    } catch (error) {
+      console.error("Error:", error);
+    }
+    document.querySelector("#addBookModal #cover_image_url").value = data
+      .volumeInfo.imageLinks
+      ? data.volumeInfo.imageLinks.thumbnail
+      : "/images/default-cover.jpg";
     document.querySelector("#addBookModal #bookTitle").value =
       data.volumeInfo.title || "";
     document.querySelector("#addBookModal #author").value = data.volumeInfo
@@ -47,7 +79,7 @@ async function fillData(data, textContent) {
       ? data.volumeInfo.categories[0].split("/").map((genre) => genre.trim())[0]
       : "";
     document.querySelector("#addBookModal #publishedYear").value =
-      parseInt(data.volumeInfo.publishedDate) || "";
+      parseInt(data.volumeInfo.publishedDate.slice(0, 5)) || "";
     document.querySelector("#addBookModal #publisher").value =
       data.volumeInfo.publisher || "";
     document.querySelector("#addBookModal #pages").value =

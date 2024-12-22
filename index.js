@@ -3,12 +3,13 @@ import ejs from "ejs";
 import axios from "axios";
 import bodyParser from "body-parser";
 import pg from "pg";
+import { htmlToText } from "html-to-text";
 
 const googleBooksAPI = "https://www.googleapis.com/books/v1";
 const googleBooksAPIKey = "AIzaSyBHlz8SKuMETU9xu1d0JlAqRCyqyYiLZCw";
-
+const baseURL = "http://localhost:3000";
 const db = new pg.Client({
-  database: "book_reviews",
+  database: "book_review_app",
   host: "localhost",
   user: "postgres",
   password: "password",
@@ -56,19 +57,30 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static("public"));
 
+app.use(express.json());
+
+const options = {
+  wordwrap: 130,
+};
+
+function htmlConvertor(html) {
+  return htmlToText(html, options);
+}
+
 async function getBooks(book_id) {
   let book;
-  let book_notes;
+  let book_details;
   if (book_id) {
     book = await db.query("SELECT * FROM books WHERE id = $1", [book_id]);
-    book_notes = await db.query("SELECT * FROM book_notes WHERE book_id = $1", [
-      book_id,
-    ]);
+    book_details = await db.query(
+      "SELECT * FROM book_details WHERE book_id = $1",
+      [book_id]
+    );
   } else {
     book = await db.query("SELECT * FROM books");
-    book_notes = await db.query("SELECT * FROM book_notes ");
+    book_details = await db.query("SELECT * FROM book_details ");
   }
-  return { books: book.rows, book_notes: book_notes.rows };
+  return { books: book.rows, book_details: book_details.rows };
 }
 
 async function fetchQuote() {
@@ -128,6 +140,10 @@ async function fetchBookByIdAPI(id) {
   }
 }
 
+app.get("/htmlToText", (req, res) => {
+  res.json({ text: htmlConvertor(req.query.html) });
+});
+
 app.get("/api/fetchBookById/:id", async (req, res) => {
   try {
     const bookId = req.params.id;
@@ -145,6 +161,10 @@ app.get("/", async (req, res) => {
   const quote = await fetchQuote();
   res.render("index.ejs", { books: data.books, quote: quote });
 });
+app.get("/book_details/:id", async (req, res) => {
+  const response = await axios.get(`${baseURL}/book/${req.params.id}`);
+  res.render("viewBook.ejs", response.data);
+});
 
 app.get("/book/:id", async (req, res) => {
   const bookId = parseInt(req.params.id);
@@ -155,52 +175,85 @@ app.get("/book/:id", async (req, res) => {
 app.post("/book", async (req, res) => {
   const input = req.body;
   const result = await db.query(
-    "INSERT INTO books (title, author, isbn, rating, review) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+    "INSERT INTO books (title, author, isbn, rating, genre, cover_image_url, published_year) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
     [
       input.title,
       input.author,
       input.isbn,
       parseInt(input.rating),
-      input.review,
+      input.genre,
+      input.cover_image_url,
+      input.published_year,
     ]
   );
-  await db.query(
-    "INSERT INTO book_notes (book_id, notes) VALUES ($1, $2) RETURNING *",
-    [result.rows[0].id, input.notes]
-  );
-  res.json(result);
-});
-
-app.put("/book/:id", async (req, res) => {
-  const book_id = parseInt(req.params.id);
-  const input = req.body;
-  const updatedBook = await db.query(
-    "UPDATE books SET title = $1, author = $2, isbn = $3, rating = $4, review = $5 WHERE id = $6 RETURNING *",
+  const book_details = await db.query(
+    "INSERT INTO book_details (book_id, notes,  description, pages, publisher, review) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
     [
-      input.title,
-      input.author,
-      input.isbn,
-      parseInt(input.rating),
+      result.rows[0].id,
+      input.notes,
+      input.description,
+      parseInt(input.pages),
+      input.publisher,
       input.review,
-      book_id,
     ]
   );
-  await db.query("UPDATE book_notes SET notes = $1 WHERE book_id = $2", [
-    input.notes,
-    book_id,
-  ]);
 
-  res.json(updatedBook.rows);
+  res.redirect(`/book_details/${result.rows[0].id}`);
 });
+
+// app.put("/book/:id", async (req, res) => {
+//   const book_id = parseInt(req.params.id);
+//   const input = req.body;
+//   const updatedBook = await db.query(
+//     "UPDATE books SET title = $1, author = $2, isbn = $3, rating = $4, review = $5 WHERE id = $6 RETURNING *",
+//     [
+//       input.title,
+//       input.author,
+//       input.isbn,
+//       parseInt(input.rating),
+//       input.review,
+//       book_id,
+//     ]
+//   );
+//   await db.query("UPDATE book_details SET notes = $1 WHERE book_id = $2", [
+//     input.notes,
+//     book_id,
+//   ]);
+
+//   res.json(updatedBook.rows);
+// });
 
 app.delete("/book", async (req, res) => {
   const book_id = parseInt(req.body.id);
 
-  await db.query("DELETE FROM books WHERE id = $1 ", [book_id]);
-  await db.query("DELETE FROM book_notes WHERE book_id = $1", [book_id]);
+  try {
+    // Perform the DELETE operations
+    const bookDeleteResult = await db.query("DELETE FROM books WHERE id = $1", [book_id]);
+    const bookDetailsDeleteResult = await db.query("DELETE FROM book_details WHERE book_id = $1", [book_id]);
 
-  res.status(200).json({ message: "book deleted" });
+    // Check if the book exists (optional, based on your requirements)
+    if (bookDeleteResult.rowCount === 0 && bookDetailsDeleteResult.rowCount === 0) {
+      return res.status(404).json({
+        error: true,
+        message: "Book not found",
+      });
+    }
+
+    // Send success response
+    res.status(200).json({
+      message: "Book deleted successfully",
+    });
+  } catch (error) {
+    // Handle unexpected errors
+    console.error("Error deleting book:", error);
+    res.status(500).json({
+      error: true,
+      message: "An internal server error occurred",
+      details: error.message,
+    });
+  }
 });
+
 
 app.get("/add-book", async (req, res) => {
   const query = req.query.q;
@@ -215,15 +268,12 @@ app.get("/add-book", async (req, res) => {
   } else {
     try {
       const books = await fetchBooksAPI();
+      // res.json(books)
       res.render("addBook.ejs", { books: books });
     } catch (error) {
       res.status(500).send("Error fetching books");
     }
   }
-});
-
-app.get("/view-book", (req, res) => {
-  res.render("viewBook.ejs");
 });
 
 app.listen(port, () => {

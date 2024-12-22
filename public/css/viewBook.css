@@ -1,0 +1,176 @@
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins&family=Rubik:ital,wght@0,300..900;1,300..900&family=Varela&display=swap");
+
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+
+:root {
+  --text-primary: #e6c229;
+  --text-seconday: #e0e0e0;
+  --text-tertiary: #a9a9a9;
+}
+body {
+  background-color: #1c1c1e;
+  font-family: Arial, sans-serif;
+  color: #e0e0e0;
+  margin: 0;
+}
+
+.page .container {
+  display: flex;
+  justify-content: space-between;
+  /* margin-top: 4rem; */
+  padding: 0 6rem;
+}
+
+.container .left-container {
+  flex: 1;
+}
+
+.container .right-container {
+  flex: 3;
+  margin-left: 3rem;
+}
+
+.book-cover img {
+  width: 100%;
+}
+
+.book-cover {
+  margin-top: 1rem;
+  width: 300px;
+}
+
+.title {
+  font-family: "Varela", sans-serif;
+  color: var(--text-primary);
+  font-style: normal;
+  margin-top: 3rem;
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 5rem;
+}
+
+.book-details {
+  display: flex;
+  justify-content: space-between;
+  max-width: 70rem;
+  margin-bottom: 6rem;
+}
+
+.book-details .left,
+.book-details .right {
+  flex: 1;
+}
+.book-details .right {
+  margin-top: 1rem;
+}
+
+.book-details h3 {
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: var(--text-seconday);
+  display: grid;
+  justify-content: space-between;
+  width: 22rem;
+  grid-template-columns: 1fr 2fr;
+  font-family: "Open Sans", sans-serif;
+}
+
+.book-details h3 span {
+  font-weight: 500 !important;
+  color: var(--text-seconday) !important;
+}
+
+.book-description h2,
+.book-summary h2,
+.book-notes h2 {
+  font-size: 1.6rem;
+  color: var(--text-primary);
+  font-family: "Open Sans", sans-serif;
+}
+.book-description p,
+.book-summary p,
+.book-notes p {
+  color: var(--text-tertiary);
+  line-height: 1.4;
+  font-family: "PT Serif", serif;
+}
+
+.book-description,
+.book-summary,
+.book-notes {
+  max-width: 60rem;
+  margin-bottom: 4rem;
+}
+.categories h3 {
+  color: #e6c229;
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+
+/* Category Tags */
+.category-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.tag {
+  background: linear-gradient(
+    135deg,
+    rgba(52, 58, 64, 0.8),
+    rgba(38, 42, 47, 0.8)
+  );
+  color: #d1d1d1;
+  padding: 8px 15px;
+  font-size: 0.95em;
+  border-radius: 20px;
+  font-weight: 500;
+  border: 1px solid #3c91e6; /* Subtle blue border */
+  transition: all 0.3s;
+  backdrop-filter: blur(
+    4px
+  ); /* Adds a slight blur effect for modern look */
+}
+
+.tag:hover {
+  border: linear-gradient(45deg, #1e8fffce, #ff69b4be);
+
+  color: #e6c229;
+  background: linear-gradient(
+    135deg,
+    rgba(52, 58, 64, 0.9),
+    rgba(38, 42, 47, 0.9)
+  );
+  cursor: pointer;
+  transform: scale(1.05); /* Slightly enlarges on hover */
+}
+.rating i {
+  color: var(--text-primary);
+  margin-right: 2px;
+}
+.delete-book-cta{
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+.cta-button {
+  background: linear-gradient(135deg, #ff5c5c, #ff8c5c); /* Red-orange gradient for delete action */
+  color: #ffffff;
+  border: none;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+.cta-button:hover {
+  transform: scale(1.1); /* Slightly enlarge the button on hover */
+}

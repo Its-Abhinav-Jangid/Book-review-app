@@ -43,9 +43,9 @@ h2 {
 
 #bookTitle {
   flex-grow: 1;
-  padding: 12px;
+  padding: 12px 0;
 
-  color: #fff;
+
   outline: none;
 }
 .bookTitleField {
@@ -251,16 +251,20 @@ h2 {
 }
 
 .book-details p,
-.book-summary p {
+.book-summary p{
   margin: 5px 0;
 }
-.modal .book-summary {
+.modal .book-summary h3 {
+  margin-left: 18px;
+  font-size: 24px;
+}
+.modal .book-summary p {
   padding: 1rem !important;
-  line-height: 1.6; /* Increases spacing between lines */
-  font-size: 18px; /* Increases font size for better readability */
-  padding: 10px 0; /* Adds padding around the summary */
-  color: #fff; /* Sets a darker color for better contrast */
-  font-family: sans-serif;
+  line-height: 1.3;
+  font-size: 16px; /* Increases font size for better readability */
+  padding-top: 0 !important;
+  color: #dadada; /* Sets a darker color for better contrast */
+  font-family: serif;
 }
 #modal-title {
   color: #4db8ff;
@@ -452,4 +456,8 @@ textarea::-webkit-scrollbar-track {
   right: 10px;
   top: calc(50% - 0.5em);
   pointer-events: none;
+}
+.rating i {
+  color: #e6c229;
+  margin-right: 2px;
 }

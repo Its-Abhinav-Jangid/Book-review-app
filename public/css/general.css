@@ -189,13 +189,15 @@ body {
   position: relative;
   border-radius: 6px;
   overflow: hidden;
+  height: 100%;
 }
 
 .book-cover {
   width: 100%;
-  height: auto;
+  height: 100%;
   display: block;
   transition: transform 0.3s ease-in-out;
+  object-fit: cover;
 }
 
 .book-card:hover .book-cover {

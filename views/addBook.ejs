@@ -6,6 +6,7 @@
     <title>Add New Book</title>
 
     <link rel="stylesheet" href="css/addBook.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
   </head>
   <body>
     <div id="modal" class="modal">
@@ -83,7 +84,7 @@
 
             <!-- Genre -->
             <div class="form-field">
-              <input type="text" id="genre" required />
+              <input type="text" id="genre" name="genre" required />
               <label for="genre">Genre</label>
             </div>
 
@@ -91,6 +92,7 @@
             <div class="form-field">
               <input
                 type="number"
+                name="published_year"
                 id="publishedYear"
                 min="1000"
                 max="9999"
@@ -98,16 +100,17 @@
               />
               <label for="publishedYear">Published Year</label>
             </div>
+            <input type="hidden" name="cover_image_url" value="" id="cover_image_url">
 
             <!-- Pages -->
             <div class="form-field">
-              <input type="number" id="pages" min="1" required />
+              <input type="number" name="pages" id="pages" min="1" required />
               <label for="pages">Pages</label>
             </div>
 
             <!-- Publisher -->
             <div class="form-field">
-              <input type="text" id="publisher" required />
+              <input type="text" id="publisher" name="publisher" required />
               <label for="publisher">Publisher</label>
             </div>
             <div class="form-field">
@@ -124,7 +127,7 @@
 
             <!-- Summary -->
             <div class="form-field">
-              <textarea id="summary" rows="4" required></textarea>
+              <textarea id="summary" name="description" rows="4" required></textarea>
               <label for="summary">Summary</label>
             </div>
             <div class="form-field">
@@ -188,8 +191,7 @@
           <div class="book-details">
             <h3 class="book-title"><%= book.volumeInfo.title %></h3>
             <p class="book-author">
-              <%= book.volumeInfo.authors ? book.volumeInfo.authors.join(', ') :
-              'Unknown Author' %>
+              <%= book.volumeInfo.authors ? book.volumeInfo.authors.join(", "): ""%>
             </p>
             <p class="book-description">
               <%=book.volumeInfo.description ? book.volumeInfo.description :
@@ -216,6 +218,7 @@
         <% } %>
       </div>
     </div>
+    <script src="https://kit.fontawesome.com/2128caa8e9.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="./js/addBook.js"></script>
   </body>
