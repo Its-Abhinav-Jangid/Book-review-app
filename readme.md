@@ -40,7 +40,8 @@ To run the project locally:
     genre VARCHAR(100),
     published_year INT,
     rating INT CHECK (rating >= 0 AND rating <= 5),
-    cover_image_url TEXT
+    cover_image_url TEXT,
+    isbn VARCHAR(50)
     );
 
     -- Create book_details table
@@ -75,11 +76,15 @@ Here’s an example of how to change the credentials:
     // Connect to the PostgreSQL database
     db.connect();
     ```
+
 4. Run the app:
+
 ```bash
     node ./index.js
 ```
+
 Your app will be live at `http://localhost:3000` (or another port depending on your setup).
+
 ## Usage
 
 After starting the app, you can:
@@ -113,4 +118,3 @@ Contributions are welcome! If you have any suggestions, bug reports, or pull req
 4. Commit your changes (`git commit -am 'Add new feature'`).
 5. Push to your branch (`git push origin feature-name`).
 6. Open a pull request.
-
