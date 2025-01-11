@@ -15,7 +15,7 @@ To run the project locally:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/book-review-app.git
+   git clone https://github.com/Its-Abhinav-Jangid/book-review-app.git
    cd book-review-app
    ```
 2. Install dependencies:
