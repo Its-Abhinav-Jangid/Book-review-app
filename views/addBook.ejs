@@ -1,225 +1,273 @@
-<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Add New Book</title>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Add New Book</title>
 
-    <link rel="stylesheet" href="css/addBook.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
-  </head>
-  <body>
-    <div id="modal" class="modal">
-      <div class="modal-content">
-        <span class="close-btn" onclick="closeModal()">&times;</span>
-        <h2 id="bookTitle">Book Title</h2>
-        <!-- Added id for dynamic title -->
+		<link rel="stylesheet" href="css/addBook.css" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+		/>
+	</head>
+	<body>
+		<div id="modal" class="modal">
+			<div class="modal-content">
+				<span class="close-btn" onclick="closeModal()">&times;</span>
+				<h2 id="bookTitle">Book Title</h2>
+				<!-- Added id for dynamic title -->
 
-        <div class="book-details-modal">
-          <p><strong>Author:</strong> <span id="author">John Doe</span></p>
-          <!-- Added id for dynamic author -->
-          <p>
-            <strong>Genre:</strong>
-            <span id="genre">Mystery, Thriller</span>
-          </p>
-          <!-- Added id for dynamic genre -->
-          <p>
-            <strong>Published:</strong> <span id="publishedYear">2022</span>
-          </p>
-          <!-- Added id for dynamic published date -->
-          <p><strong>Pages:</strong> <span id="pages">320</span></p>
-          <!-- Added id for dynamic page count -->
-          <p>
-            <strong>Publisher:</strong>
-            <span id="publisher">Penguin Books</span>
-          </p>
-          <!-- Added id for dynamic publisher -->
-        </div>
+				<div class="book-details-modal">
+					<p>
+						<strong>Author:</strong>
+						<span id="author">John Doe</span>
+					</p>
+					<!-- Added id for dynamic author -->
+					<p>
+						<strong>Genre:</strong>
+						<span id="genre">Mystery, Thriller</span>
+					</p>
+					<!-- Added id for dynamic genre -->
+					<p>
+						<strong>Published:</strong>
+						<span id="publishedYear">2022</span>
+					</p>
+					<!-- Added id for dynamic published date -->
+					<p><strong>Pages:</strong> <span id="pages">320</span></p>
+					<!-- Added id for dynamic page count -->
+					<p>
+						<strong>Publisher:</strong>
+						<span id="publisher">Penguin Books</span>
+					</p>
+					<!-- Added id for dynamic publisher -->
+				</div>
 
-        <div class="book-summary">
-          <h3>Summary</h3>
-          <p id="summary">This book dives into a thrilling story...</p>
-          <!-- Added id for dynamic summary -->
-        </div>
+				<div class="book-summary">
+					<h3>Summary</h3>
+					<p id="summary">
+						This book dives into a thrilling story...
+					</p>
+					<!-- Added id for dynamic summary -->
+				</div>
 
-        <div class="rating">
-          <h3>Rating</h3>
-          <span id="modal-rating">★★★★☆</span>
-          <!-- Added id for dynamic rating -->
-        </div>
-        <div class="more-info">
-          <a id="modal-link" href="#" target="_blank" style="color: #4db8ff"
-            >More Info on Google Books</a
-          >
-          <!-- Added link for more info -->
-        </div>
-      </div>
-    </div>
-    <!-- Add Book Modal -->
-    <div id="addBookModal" class="modal hidden">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h2>Add New Book</h2>
-          <span id="closeAddBookModal" class="close">&times;</span>
-        </div>
+				<div class="rating">
+					<h3>Rating</h3>
+					<span id="modal-rating">★★★★☆</span>
+					<!-- Added id for dynamic rating -->
+				</div>
+				<div class="more-info">
+					<a
+						id="modal-link"
+						href="#"
+						target="_blank"
+						style="color: #4db8ff"
+						>More Info on Google Books</a
+					>
+					<!-- Added link for more info -->
+				</div>
+			</div>
+		</div>
+		<div class="modal-background hidden" id="modal-background"></div>
+		<!-- Add Book Modal -->
+		<div id="addBookModal" class="modal hidden">
+			<span class="close-btn" onclick="closeModal()">&times;</span>
+			<div class="modal-content">
+				<div class="modal-header">
+					<h2 class="modal-title">Add New Book</h2>
+				</div>
 
-        <div class="modal-body">
-          <form id="addBookForm" method="post" action="/book">
-            <div class="form-field bookTitleField">
-              <input
-                type="text"
-                id="bookTitle"
-                required
-                name="title"
-                value=""
-              />
-              <label for="bookTitle">Book Title</label>
-            </div>
+				<div class="modal-body">
+					<form id="addBookForm" method="post" action="/book">
+						<div class="form-field bookTitleField">
+							<input
+								type="text"
+								id="bookTitle"
+								required
+								name="title"
+								value=""
+								spellcheck="false"
+							/>
+							<label for="bookTitle">Book Title</label>
+						</div>
 
-            <!-- Author -->
-            <div class="form-field">
-              <input type="text" id="author" required name="author" />
-              <label for="author">Author</label>
-            </div>
+						<!-- Author -->
 
-            <!-- Genre -->
-            <div class="form-field">
-              <input type="text" id="genre" name="genre" required />
-              <label for="genre">Genre</label>
-            </div>
+						<input
+							type="hidden"
+							id="author"
+							required
+							name="author"
+						/>
 
-            <!-- Published Year -->
-            <div class="form-field">
-              <input
-                type="number"
-                name="published_year"
-                id="publishedYear"
-                min="1000"
-                max="9999"
-                required
-              />
-              <label for="publishedYear">Published Year</label>
-            </div>
-            <input type="hidden" name="cover_image_url" value="" id="cover_image_url">
+						<!-- Genre -->
 
-            <!-- Pages -->
-            <div class="form-field">
-              <input type="number" name="pages" id="pages" min="1" required />
-              <label for="pages">Pages</label>
-            </div>
+						<input type="hidden" id="genre" name="genre" required />
 
-            <!-- Publisher -->
-            <div class="form-field">
-              <input type="text" id="publisher" name="publisher" required />
-              <label for="publisher">Publisher</label>
-            </div>
-            <div class="form-field">
-              <input
-                type="number"
-                id="rating"
-                min="1"
-                max="5"
-                required
-                name="rating"
-              />
-              <label for="rating">Rating</label>
-            </div>
+						<!-- Published Year -->
 
-            <!-- Summary -->
-            <div class="form-field">
-              <textarea id="summary" name="description" rows="4" required></textarea>
-              <label for="summary">Summary</label>
-            </div>
-            <div class="form-field">
-              <textarea id="notes" rows="4" required name="notes"></textarea>
-              <label for="summary">Notes</label>
-            </div>
+						<input
+							type="hidden"
+							name="published_year"
+							id="publishedYear"
+							min="1000"
+							max="9999"
+							required
+						/>
 
-            <!-- Rating -->
-            <div class="form-field">
-              <textarea
-                type="text"
-                id="review"
-                rows="4"
-                required
-                name="review"
-              ></textarea>
-              <label for="rating">Review</label>
-            </div>
-            <input type="hidden" name="isbn" id="isbn" />
+						<input
+							type="hidden"
+							name="cover_image_url"
+							value=""
+							id="cover_image_url"
+						/>
 
-            <!-- Modal Footer with Buttons -->
-            <div class="modal-footer">
-              <button type="button" class="btn cancel" id="cancelButton">
-                Cancel
-              </button>
-              <button type="submit" class="btn submit">Add Book</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
+						<!-- Pages -->
 
-    <div class="add-book-container">
-      <h2>Add a New Book</h2>
-      <p class="instructions">
-        Search for a book by title and click "Add" to include it in your list.
-      </p>
-      <form action="/add-book" method="get">
-        <div class="search-bar">
-          <input
-            type="text"
-            id="bookTitle"
-            name="q"
-            placeholder="Enter book name..."
-            autocomplete="off"
-          />
-          <button id="searchButton" type="submit">Search</button>
-        </div>
-      </form>
+						<input
+							type="hidden"
+							name="pages"
+							id="pages"
+							min="1"
+							required
+						/>
 
-      <div id="results" class="results-container">
-        <% if (books.length) { %> <% books.forEach(book => { %>
-        <div class="book-card">
-          <img
-            class="book-cover"
-            <img
-            class="book-cover"
-            src="<%= book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.thumbnail : '/images/default-cover.jpg' %>"
-          />
+						<!-- Publisher -->
 
-          <div class="book-details">
-            <h3 class="book-title"><%= book.volumeInfo.title %></h3>
-            <p class="book-author">
-              <%= book.volumeInfo.authors ? book.volumeInfo.authors.join(", "): ""%>
-            </p>
-            <p class="book-description">
-              <%=book.volumeInfo.description ? book.volumeInfo.description :
-              ''%>
-            </p>
+						<input
+							type="hidden"
+							id="publisher"
+							name="publisher"
+							required
+						/>
 
-            <button
-              class="add-button btn"
-              id="openAddBookButton"
-              onclick="openModal('<%=book.id%>', false)"
-            >
-              Add
-            </button>
-            <button
-              class="btn view-btn"
-              onclick="openModal('<%=book.id%>', true)"
-            >
-              View
-            </button>
-          </div>
-        </div>
-        <% }) %> <% } else { %>
-        <p></p>
-        <% } %>
-      </div>
-    </div>
-    <script src="https://kit.fontawesome.com/2128caa8e9.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="./js/addBook.js"></script>
-  </body>
+						<div class="form-field">
+							<input
+								type="number"
+								id="rating"
+								min="1"
+								max="5"
+								required
+								name="rating"
+							/>
+							<label for="rating">Rating</label>
+						</div>
+
+						<!-- Summary -->
+
+						<input
+							id="description"
+							name="description"
+							rows="4"
+							type="hidden"
+							required
+						/>
+
+						<div class="form-field">
+							<textarea
+								id="notes"
+								rows="4"
+								name="notes"
+							></textarea>
+							<label for="summary">Notes</label>
+						</div>
+
+						<!-- Rating -->
+						<div class="form-field">
+							<textarea
+								type="text"
+								id="review"
+								rows="4"
+								name="review"
+							></textarea>
+							<label for="rating">Review</label>
+						</div>
+						<input type="hidden" name="isbn" id="isbn" />
+
+						<!-- Modal Footer with Buttons -->
+						<div class="modal-footer">
+							<button
+								type="button"
+								class="btn cancel"
+								id="cancelButton"
+							>
+								Cancel
+							</button>
+							<button type="submit" class="btn submit">
+								Add Book
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<div class="add-book-container">
+			<h2>Add a New Book</h2>
+			<p class="instructions">
+				Search for a book by title and click "Add" to include it in your
+				list.
+			</p>
+			<form action="/add-book" method="get">
+				<div class="search-bar">
+					<input
+						type="text"
+						id="bookTitle"
+						name="q"
+						placeholder="Enter book name..."
+						autocomplete="off"
+					/>
+					<button id="searchButton" type="submit">Search</button>
+				</div>
+			</form>
+
+			<div id="results" class="results-container">
+				<% if (books.length) { %> <% books.forEach(book => { %>
+				<div class="book-card">
+					<img
+						class="book-cover"
+						<img
+						class="book-cover"
+						src="<%= book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.thumbnail : '/images/default-cover.jpg' %>"
+					/>
+
+					<div class="book-details">
+						<h3 class="book-title"><%= book.volumeInfo.title %></h3>
+						<p class="book-author">
+							<%= book.volumeInfo.authors ?
+							book.volumeInfo.authors.join(", "): ""%>
+						</p>
+						<p class="book-description">
+							<%=book.volumeInfo.shortDescription ?
+							book.volumeInfo.shortDescription : ''%>
+						</p>
+
+						<button
+							class="add-button btn"
+							id="openAddBookButton"
+              data = '<%=book.string%>'
+							onclick="openModal('addBookModal',this)"
+						>
+							Add
+						</button>
+						<button
+							class="btn view-btn"
+							data="<%=book.string%>"
+							onclick="openModal('modal',this)"
+						>
+							View
+						</button>
+					</div>
+				</div>
+				<% }) %> <% } else { %>
+				<p></p>
+				<% } %>
+			</div>
+		</div>
+		<script
+			src="https://kit.fontawesome.com/2128caa8e9.js"
+			crossorigin="anonymous"
+		></script>
+		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+		<script src="js/addBook.js"></script>
+	</body>
 </html>

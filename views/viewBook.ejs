@@ -1,144 +1,242 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../css/viewBook.css" />
+    <title><%= books[0].title %></title>
+  </head>
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
-  <link rel="stylesheet" href="../css/viewBook.css" />
-  <title>
-    <%= books[0].title %>
-  </title>
-
-</head>
-
-<body>
-  <div class="page">
-    <h1 class="title">
-      <%= books[0].title %>
-    </h1>
-    <div class="container">
-      <div class="left-container">
-        <div class="book-cover">
-          <img src="<%= books[0].cover_image_url %>" alt="" />
-        </div>
-        <div class="categories">
-          <div class="category-tags">
-            <span class="tag">
-              <%= books[0].genre %>
-            </span>
-
-          </div>
-        </div>
-      </div>
-      <div class="right-container">
-        <div class="book-details">
-          <div class="left">
-            <h3>Author:<span>
-                <%= books[0].author %>
-              </span></h3>
-            <h3>Pages: <span>
-                <%= book_details[0].pages %>
-              </span></h3>
-            <h3>
-              Rating:
-              <span class="rating">
-                <% for (let i=1; i <=5; i++) { %>
-                  <% if (i <=books[0].rating) { %>
-                    <i class="fa-solid fa-star"></i>
-                    <% } else { %>
-                      <i class="fa-regular fa-star"></i>
-                      <% } %>
-                        <% } %>
-              </span>
-            </h3>
-
-          </div>
-          <div class="right">
-            <h3>Genre:<span>
-                <%= books[0].genre %>
-              </span></h3>
-            <h3>Publisher:<span>
-                <%= book_details[0].publisher %>
-              </span></h3>
-            <h3>Published Year:<span>
-                <%= books[0].published_year %>
-              </span></h3>
-          </div>
-        </div>
-        <div class="book-description">
-          <h2>Description</h2>
-          <p>
-            <%- book_details[0].description %>
-          </p>
+  <body>
+    <div id="editBookModal" class="modal hidden">
+      <span class="close-btn" onclick="closeModal()">&times;</span>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title">Edit Book</h2>
         </div>
 
-        <div class="book-notes">
-          <h2>Notes</h2>
-          <p>
-            <%= book_details[0].notes %>
-          </p>
-        </div>
-        <div class="book-notes">
-          <h2>Review</h2>
-          <p>
-            <%= book_details[0].review %>
-          </p>
+        <div class="modal-body">
+          <form
+            id="addBookForm"
+            method="post"
+            action="/editBook/<%=books[0].id%>"
+          >
+            <div class="form-field bookTitleField">
+              <input
+                type="text"
+                id="bookTitle"
+                required
+                name="title"
+                value=""
+              />
+              <label for="bookTitle">Book Title</label>
+            </div>
+
+            <!-- Author -->
+            <div class="form-field">
+              <input type="text" id="author" required name="author" />
+              <label for="author">Author</label>
+            </div>
+
+            <!-- Genre -->
+            <div class="form-field">
+              <input type="text" id="genre" name="genre" required />
+              <label for="genre">Genre</label>
+            </div>
+
+            <!-- Published Year -->
+            <div class="form-field">
+              <input
+                type="number"
+                name="published_year"
+                id="publishedYear"
+                min="1000"
+                max="9999"
+                required
+              />
+              <label for="publishedYear">Published Year</label>
+            </div>
+            <input
+              type="hidden"
+              name="cover_image_url"
+              value=""
+              id="cover_image_url"
+            />
+
+            <!-- Pages -->
+            <div class="form-field">
+              <input type="number" name="pages" id="pages" min="1" required />
+              <label for="pages">Pages</label>
+            </div>
+
+            <!-- Publisher -->
+            <div class="form-field">
+              <input type="text" id="publisher" name="publisher" required />
+              <label for="publisher">Publisher</label>
+            </div>
+            <div class="form-field">
+              <input
+                type="number"
+                id="rating"
+                min="1"
+                max="5"
+                required
+                name="rating"
+              />
+              <label for="rating">Rating</label>
+            </div>
+
+            <!-- Summary -->
+            <div class="form-field">
+              <textarea
+                id="description"
+                name="description"
+                rows="4"
+                required
+              ></textarea>
+              <label for="description">Description</label>
+            </div>
+            <div class="form-field">
+              <textarea id="notes" rows="4" name="notes"></textarea>
+              <label for="notes">Notes</label>
+            </div>
+
+            <!-- Rating -->
+            <div class="form-field">
+              <textarea
+                type="text"
+                id="review"
+                rows="4"
+                name="review"
+              ></textarea>
+              <label for="rating">Review</label>
+            </div>
+            <input type="hidden" name="isbn" id="isbn" />
+
+            <!-- Modal Footer with Buttons -->
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn cancel"
+                id="cancelButton"
+                onclick="closeModal()"
+              >
+                Cancel
+              </button>
+              <button type="submit" class="btn submit">Save</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
-  </div>
-  <div class="delete-book-cta">
-    <button class="cta-button" onclick="deleteBook('<%= books[0].id %>')">
-      <i class="fa fa-trash" style="font-size: 24px;" aria-hidden="true"></i>
+    <div class="modal-background hidden" id="modal-background"></div>
+    <div class="page">
+      <h1 class="title"><%= books[0].title %></h1>
+      <div class="container">
+        <div class="left-container">
+          <div class="book-cover">
+            <img src="<%= books[0].cover_image_url %>" alt="" />
+          </div>
+          <div class="categories">
+            <div class="category-tags">
+              <span class="tag"> <%= books[0].genre %> </span>
+            </div>
+          </div>
+        </div>
+        <div class="right-container">
+          <div class="book-details">
+            <div class="left">
+              <h3>Author:<span> <%= books[0].author %> </span></h3>
+              <h3>
+                Pages:
+                <span>
+                  <%= book_details[0].pages !== -1 ? book_details[0].pages :
+                  'Not Available'%>
+                </span>
+              </h3>
+              <h3>
+                Rating:
+                <span class="rating">
+                  <% for (let i=1; i <=5; i++) { %> <% if (i <=books[0].rating)
+                  { %>
+                  <i class="fa-solid fa-star"></i>
+                  <% } else { %>
+                  <i class="fa-regular fa-star"></i>
+                  <% } %> <% } %>
+                </span>
+              </h3>
+            </div>
+            <div class="right">
+              <h3>Genre:<span> <%= books[0].genre %> </span></h3>
+              <h3>Publisher:<span> <%= book_details[0].publisher %> </span></h3>
+              <h3>
+                Published Year:<span> <%= books[0].published_year %> </span>
+              </h3>
+            </div>
+          </div>
+          <div class="book-description">
+            <h2>Description</h2>
+            <p><%- book_details[0].description %></p>
+          </div>
+          <% if (book_details[0].notes){ %>
+          <div class="book-notes">
+            <h2>Notes</h2>
+            <p><%= book_details[0].notes %></p>
+          </div>
+          <% }%> <% if (book_details[0].review.length > 1) { %>
+          <div class="book-notes">
+            <h2>Review</h2>
+            <p><%= book_details[0].review %></p>
+          </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
 
-    </button>
-  </div>
+    <div class="book-cta">
+      <button
+        class="cta-button cta-edit-btn"
+        id="editBookBtn"
+        data="<%= JSON.stringify({...books[0], ...book_details[0]}) %>"
+        onclick="openModal(this)"
+      >
+        <i class="fa fa-edit" style="font-size: 24px" aria-hidden="true"></i>
+      </button>
+      <button class="cta-button" onclick="showDeleteWarning()">
+        <i class="fa fa-trash" style="font-size: 24px" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="delete-modal hidden" style="display: none" id="deleteBookModal">
+      <div class="waring-icon">
+        <i
+          class="fa fa-warning"
+          style="font-size: 64px; color: #dd3b3b"
+          aria-hidden="true"
+        ></i>
+      </div>
+      <div class="warning-text">
+        <p>
+          Are you sure you want to delete this book? This action cannot be
+          undone.
+        </p>
+      </div>
+      <div class="action-btns">
+        <button class="btn cancel" onclick="hideDeleteWarning()">Cancel</button>
+        <button class="btn delete" onclick="deleteBook('<%=books[0].id %>')">
+          Delete
+        </button>
+      </div>
+    </div>
+    <script src="/js/viewBook.js"></script>
 
-  <script src="https://kit.fontawesome.com/2128caa8e9.js" crossorigin="anonymous"></script>
- <script>
- async function deleteBook(bookId) {
-  const userConfirmed = confirm(
-    "Are you sure you want to delete this book? This action cannot be undone."
-  );
-
-  if (!userConfirmed) {
-    return; // Exit if the user cancels
-  }
-
-  try {
-    // Send DELETE request
-    const response = await fetch("/book", {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ id: bookId }),
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      alert(data.message || "The book has been successfully deleted."); // Use response message if available
-      location.href = "/"; // Redirect to homepage or another page
-    } else {
-      const errorData = await response.json();
-      alert(
-        errorData.message ||
-          "We encountered an issue while trying to delete the book. Please try again later."
-      );
-    }
-  } catch (error) {
-    console.error("Error:", error);
-    alert(
-      "An unexpected error occurred. Please check your internet connection or try again later."
-    );
-  }
-}
-
-</script>
-
- 
-</body>
-
+    <script
+      src="https://kit.fontawesome.com/2128caa8e9.js"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>

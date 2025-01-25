@@ -15,7 +15,7 @@ To run the project locally:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/book-review-app.git
+   git clone https://github.com/Its-Abhinav-Jangid/book-review-app.git
    cd book-review-app
    ```
 2. Install dependencies:
@@ -53,6 +53,11 @@ To run the project locally:
     notes TEXT,
     review TEXT,
     PRIMARY KEY (book_id)
+    );
+
+    CREATE TABLE users (
+      id SERIAL PRIMARY KEY,
+      name TEXT
     );
    ```
 
@@ -98,7 +103,7 @@ After starting the app, you can:
 - Node.js
 - Express.js
 - EJS (for templating)
-- PostgreSQL (or your database of choice)
+- PostgreSQL (database)
 - CSS/HTML (for front-end design)
 - Font Awesome (for icons)
 

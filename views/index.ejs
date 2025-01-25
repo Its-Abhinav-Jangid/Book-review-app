@@ -1,88 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/general.css" />
+    <title>Book Review App</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="css/general.css" />
-  <title>Book Review App</title>
-</head>
-
-<body>
-  <div class="homepage">
-    <section class="welcome-section">
-      <div class="welcome-content">
-        <h1>Welcome back, <span id="user-name">Abhinav</span>!</h1>
-        <p>
-          Your personal library, reimagined. Track, rate, and relive your
-          favorite reads.
-        </p>
-        <div class="actions">
-          <button class="action-button" onclick="location.href='/add-book'">Add New Book</button>
-          <button class="action-button" onclick="location.href='#your-book-list'">View Collection</button>
+  <body>
+    <% if (userData === null){ %>
+    <div class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title">Welcome!</h3>
         </div>
-        <div class="progress">
+
+        <div class="modal-body">
+          <p class="modal-detail">What should we call you?</p>
+          <form id="addBookForm" method="post" action="/register">
+            <div class="form-field">
+              <input
+                type="text"
+                id="username"
+                name="username"
+                value=""
+                spellcheck="false"
+                placeholder="Your Name"
+                required
+              />
+            </div>
+
+            <!-- Modal Footer with Buttons -->
+            <div class="modal-footer">
+              <button type="submit" class="btn submit">Continue</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <%}else{%>
+    <div class="homepage">
+      <div class="quote-mobile">
+        <div class="quote-image">
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/10276/10276414.png"
+            alt="quote-icon"
+          />
+        </div>
+
+        <% if(quote){ %> <%- quote %> <% } else{ %>
+        <blockquote>
+          “A room without books is like a body without a soul.” – Cicero
+        </blockquote>
+        <%}%>
+      </div>
+      <section class="welcome-section">
+        <div class="welcome-content">
+          <h1>
+            Welcome back, <span id="user-name"><%= userData.name %></span>!
+          </h1>
           <p>
-            You've added
-            <span id="book-count">
-              <%= books.length %>
-            </span> books to your
-            library.
+            Your personal library, reimagined. Track, rate, and relive your
+            favorite reads.
+          </p>
+          <div class="actions">
+            <button class="action-button" onclick="location.href='/add-book'">
+              Add New Book
+            </button>
+            <button
+              class="action-button"
+              onclick="location.href='#your-book-list'"
+            >
+              View Collection
+            </button>
+          </div>
+          <div class="progress">
+            <p>
+              You've added
+              <span id="book-count"> <%= books.length %> </span> books to your
+              library.
+            </p>
+          </div>
+        </div>
+
+        <div class="quote-section">
+          <div class="quote-icon">📚</div>
+          <h2>Quote of the Day</h2>
+          <div id="quote">
+            <% if(quote){ %> <%- quote %> <% } else{ %>
+            <blockquote>
+              “A room without books is like a body without a soul.” – Cicero
+            </blockquote>
+            <%}%>
+          </div>
+          <p class="tip">
+            Did you know? Reading for just 15 minutes a day can reduce stress by
+            up to 68%.
           </p>
         </div>
-      </div>
-
-      <div class="quote-section">
-        <div class="quote-icon">📚</div>
-        <h2>Quote of the Day</h2>
-        <div id="quote">
-          <% if(quote){ %> <%- quote %>
-              <% } else{ %>
-                <blockquote>
-                  “A room without books is like a body without a soul.” – Cicero
-                </blockquote>
-                <%}%>
-        </div>
-        <p class="tip">
-          Did you know? Reading for just 15 minutes a day can reduce stress by
-          up to 68%.
-        </p>
-      </div>
-    </section>
-    <div class="line"></div>
-    <div class="your-book-list" id="your-book-list">
-      <h3>Your Book List</h3>
-      <div class="book-grid">
-        <% books.forEach(book=> { %>
-          <div class="book-card" onclick="location.href='/book_details/<%= book.id %>'">
+      </section>
+      <div class="line"></div>
+      <div class="your-book-list" id="your-book-list">
+        <h3>Your Book List</h3>
+        <div class="book-grid">
+          <% books.forEach(book=> { %>
+          <div
+            class="book-card"
+            onclick="location.href='/book_details/<%= book.id %>'"
+          >
             <div class="image-container">
-              <img src="<%=book.cover_image_url %>" alt="Book Cover" class="book-cover" />
+              <img
+                src="<%=book.cover_image_url %>"
+                alt="Book Cover"
+                class="book-cover"
+              />
               <div class="dark-overlay"></div>
             </div>
             <div class="book-info">
-              <h3 class="book-title">
-                <%= book.title %>
-              </h3>
-              <p class="book-author">
-                <%= book.author %>
-              </p>
+              <h3 class="book-title"><%= book.title %></h3>
+              <p class="book-author"><%= book.author %></p>
             </div>
           </div>
 
           <%}); %>
+        </div>
+
+        <!-- Repeat book-card for more books -->
       </div>
-
-      <!-- Repeat book-card for more books -->
     </div>
-  </div>
-  <div class="add-book-cta">
-    <button class="cta-button" onclick="location.href='/add-book'">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"
-        stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-      </svg>
-    </button>
-  </div>
-</body>
-
+    <div class="add-book-cta">
+      <button class="cta-button" onclick="location.href='/add-book'">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 4v16m8-8H4"
+          />
+        </svg>
+      </button>
+    </div>
+    <% } %>
+  </body>
 </html>
