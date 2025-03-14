@@ -5,108 +5,114 @@ const cancelButton = document.getElementById("cancelButton");
 const modalBackground = document.getElementById("modal-background");
 
 const testData = {
-	volumeInfo: {
-		averageRating: 4,
-		title: "The pragmatic programmer",
-		authors: ["Andrew Hunt", "David Thomas"],
-		categories: ["programming"],
-		publishedDate: "2018-12-2",
-		pageCount: 300,
-		publisher: "Pearson",
-		description:
-			"lorem ipsum bla bla fdfgshed gf dfyg gfsdf ydgydsfd f gfgdyf dsgfdsg gfydyfds dgf sdgfusgufgu dsg udgfu dsgugudsgfugdus fsd gfugdsfgsd fus gdsufgudsfg udsgf dsfgsuidgfgdsuf dsfugsd ugfdsufg sdugfuisdgfui dgsuf dsgfud gfugdusfggdsgfdgsufds dsgfugs dfgsd fdgusg fuds",
-		industryIdentifiers: [{ identifier: "dfsgsdgd" }],
-	},
+  volumeInfo: {
+    averageRating: 4,
+    title: "The pragmatic programmer",
+    authors: ["Andrew Hunt", "David Thomas"],
+    categories: ["programming"],
+    publishedDate: "2018-12-2",
+    pageCount: 300,
+    publisher: "Pearson",
+    description:
+      "lorem ipsum bla bla fdfgshed gf dfyg gfsdf ydgydsfd f gfgdyf dsgfdsg gfydyfds dgf sdgfusgufgu dsg udgfu dsgugudsgfugdus fsd gfugdsfgsd fus gdsufgudsfg udsgf dsfgsuidgfgdsuf dsfugsd ugfdsufg sdugfuisdgfui dgsuf dsgfud gfugdusfggdsgfdgsufds dsgfugs dfgsd fdgusg fuds",
+    industryIdentifiers: [{ identifier: "dfsgsdgd" }],
+  },
 };
 
+function truncateDescriptionForMobile(data) {
+  let books = data.getAttribute("data");
+  console.log("hehhje");
+  books = JSON.parse(books);
+  console.log(books);
+}
+
 async function fillData(data, textContent) {
-	// For viewing data (textContent = true)
-	let stars = "";
-	if (textContent) {
-		for (let i = 1; i <= 5; i++) {
-			if (i <= data.volumeInfo.averageRating) {
-				stars += `<i class="fa-solid fa-star"></i>`;
-			} else {
-				stars += `<i class="fa-regular fa-star"></i>`;
-			}
-		}
+  // For viewing data (textContent = true)
+  let stars = "";
+  if (textContent) {
+    for (let i = 1; i <= 5; i++) {
+      if (i <= data.volumeInfo.averageRating) {
+        stars += `<i class="fa-solid fa-star"></i>`;
+      } else {
+        stars += `<i class="fa-regular fa-star"></i>`;
+      }
+    }
 
-		document.getElementById("bookTitle").textContent =
-			data.volumeInfo.title || "N/A";
-		document.getElementById("author").textContent = data.volumeInfo.authors
-			? data.volumeInfo.authors.join(", ")
-			: "N/A";
-		document.getElementById("genre").textContent = data.volumeInfo
-			.categories
-			? data.volumeInfo.categories.join(", ")
-			: "N/A";
-		document.getElementById("publishedYear").textContent =
-			data.volumeInfo.publishedDate || "N/A";
-		document.getElementById("pages").textContent =
-			data.volumeInfo.pageCount || "N/A";
-		document.getElementById("publisher").textContent =
-			data.volumeInfo.publisher || "N/A";
-		document.getElementById("summary").innerHTML =
-			data.volumeInfo.description || "No summary available.";
-		document.getElementById("modal-rating").innerHTML = stars;
-	}
-	// For adding/editing data (textContent = false)
-	else {
-		document.querySelector("#addBookModal #cover_image_url").value = data
-			.volumeInfo.imageLinks
-			? data.volumeInfo.imageLinks.thumbnail
-			: "/images/default-cover.jpg";
-		document.querySelector("#addBookModal #bookTitle").value =
-			data.volumeInfo.title || "";
-		document.querySelector("#addBookModal #author").value = data.volumeInfo
-			.authors
-			? data.volumeInfo.authors.join(", ")
-			: "";
+    document.getElementById("bookTitle").textContent =
+      data.volumeInfo.title || "N/A";
+    document.getElementById("author").textContent = data.volumeInfo.authors
+      ? data.volumeInfo.authors.join(", ")
+      : "N/A";
+    document.getElementById("genre").textContent = data.volumeInfo.categories
+      ? data.volumeInfo.categories.join(", ")
+      : "N/A";
+    document.getElementById("publishedYear").textContent =
+      data.volumeInfo.publishedDate || "N/A";
+    document.getElementById("pages").textContent =
+      data.volumeInfo.pageCount || "N/A";
+    document.getElementById("publisher").textContent =
+      data.volumeInfo.publisher || "N/A";
+    document.getElementById("description").innerHTML =
+      data.volumeInfo.description || "No description available.";
+    document.getElementById("modal-rating").innerHTML = stars;
+  }
+  // For adding/editing data (textContent = false)
+  else {
+    document.querySelector("#addBookModal #cover_image_url").value = data
+      .volumeInfo.imageLinks
+      ? data.volumeInfo.imageLinks.thumbnail
+      : "/images/default-cover.jpg";
+    document.querySelector("#addBookModal #bookTitle").value =
+      data.volumeInfo.title || "";
+    document.querySelector("#addBookModal #author").value = data.volumeInfo
+      .authors
+      ? data.volumeInfo.authors.join(", ")
+      : "";
 
-		document.querySelector("#addBookModal #genre").value = data.volumeInfo
-			.categories
-			? data.volumeInfo.categories[0]
-					.split("/")
-					.map((genre) => genre.trim())[0]
-			: "";
-		document.querySelector("#addBookModal #rating").value =
-			parseInt(data.volumeInfo.averageRating) || "";
-		document.querySelector("#addBookModal #publishedYear").value =
-			parseInt(data.volumeInfo.publishedDate.slice(0, 5)) || "";
-		document.querySelector("#addBookModal #publisher").value =
-			data.volumeInfo.publisher || "";
-		document.querySelector("#addBookModal #pages").value =
-			parseInt(data.volumeInfo.pageCount) || "";
-		document.querySelector("#addBookModal #description").value =
-			data.volumeInfo.description || "";
-		document.querySelector("#addBookModal #isbn").value =
-			data.volumeInfo.industryIdentifiers[0].identifier ||
-			data.volumeInfo.industryIdentifiers[1].identifier ||
-			"null";
-	}
+    document.querySelector("#addBookModal #genre").value = data.volumeInfo
+      .categories
+      ? data.volumeInfo.categories[0].split("/").map((genre) => genre.trim())[0]
+      : "";
+    document.querySelector("#addBookModal #rating").value =
+      parseInt(data.volumeInfo.averageRating) || "";
+    document.querySelector("#addBookModal #publishedYear").value =
+      parseInt(data.volumeInfo.publishedDate.slice(0, 5)) || "";
+    document.querySelector("#addBookModal #publisher").value =
+      data.volumeInfo.publisher || "";
+    document.querySelector("#addBookModal #pages").value =
+      parseInt(data.volumeInfo.pageCount) || "";
+    document.querySelector("#addBookModal #description").value =
+      data.volumeInfo.description || "";
+    document.querySelector("#addBookModal #isbn").value =
+      data.volumeInfo.industryIdentifiers[0].identifier ||
+      data.volumeInfo.industryIdentifiers[1].identifier ||
+      "null";
+    document.querySelector("#addBookModal #notes").value = "";
+    document.querySelector("#addBookModal #review").value = "";
+  }
 }
 
 async function openModal(modalId, data) {
-	data = JSON.parse(data.getAttribute("data"));
+  data = JSON.parse(data.getAttribute("data"));
 
-	if (modalId === "modal") {
-		await fillData(data, true);
-		const googleBooksLink = data.volumeInfo.infoLink || "#";
-		document.getElementById("modal-link").href = googleBooksLink;
-	} else {
-		await fillData(data, false);
-		document.getElementById("addBookModal").style.display = "flex"; // Show add book modal
-	}
+  if (modalId === "modal") {
+    await fillData(data, true);
+    const googleBooksLink = data.volumeInfo.infoLink || "#";
+    document.getElementById("modal-link").href = googleBooksLink;
+  } else {
+    await fillData(data, false);
+    document.getElementById("addBookModal").style.display = "flex"; // Show add book modal
+  }
 
-	document.getElementById(modalId).style.display = "flex";
-	modalBackground.style.display = "block";
+  document.getElementById(modalId).style.display = "flex";
+  modalBackground.style.display = "block";
 }
 
 // Close the modal
 function closeModal() {
-	document.getElementById("modal").style.display = "none";
-	document.getElementById("addBookModal").style.display = "none";
-	modalBackground.style.display = "none";
+  document.getElementById("modal").style.display = "none";
+  document.getElementById("addBookModal").style.display = "none";
+  modalBackground.style.display = "none";
 }
 
 // Open/Close Modal Logic
@@ -117,5 +123,5 @@ cancelButton.onclick = () => closeModal();
 
 // Combined window.onclick for outside click
 modalBackground.onclick = () => {
-	closeModal();
+  closeModal();
 };

@@ -175,6 +175,8 @@ body {
     border 0.3s;
   border: 2px solid #3a3a3d;
   cursor: pointer;
+  max-height: 30rem;
+  min-height: 23rem;
 }
 
 .book-card:hover {
@@ -237,7 +239,6 @@ body {
 }
 
 .book-card:hover .book-info {
-  opacity: 1;
   transform: translateY(0);
 }
 
@@ -403,6 +404,38 @@ body {
 .quote-mobile {
   display: none;
 }
+#line-mobile {
+  display: none;
+}
+.add-book-card {
+  position: relative;
+  /* background-color: rgba(255, 255, 255, 0.1); */
+  backdrop-filter: blur(10px);
+  width: 300px;
+  padding: 8px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease-in-out;
+  border: 4px dashed #3a3a3d;
+  max-height: 30rem;
+  min-height: 20rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.add-book-card:hover {
+  transform: scale(1.05) rotate(1deg);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+}
+.add-book-card .add-icon {
+  transition: 0.3s ease-in-out;
+}
+.add-book-card:hover .add-icon {
+  transform: scale(1.3);
+}
 
 @media (max-width: 1000px) {
   .actions button {
@@ -414,7 +447,37 @@ body {
 }
 
 @media (max-width: 700px) {
+  #line-mobile {
+    display: block;
+    margin-top: 10px;
+  }
+  #line-desktop {
+    display: none;
+  }
+  .quote-section {
+    display: none;
+  }
   .welcome-section {
+    width: 100%;
+    background: none !important;
+  }
+  .welcome-content {
+    background: none !important;
+    display: block;
+
+    padding: 1rem;
+  }
+  .welcome-content h1 {
+    font-size: 32px;
+    margin-top: 10px;
+  }
+  .welcome-content > p {
+    display: none;
+  }
+  .welcome-content p {
+    font-size: 16px;
+  }
+  .welcome-content .actions {
     display: none;
   }
   .quote-mobile {
@@ -430,12 +493,7 @@ body {
     margin: 0;
     padding: 10px 0;
   }
-  .quote-image {
-    width: 60px;
-  }
-  .quote-image img {
-    width: 100%;
-  }
+
   .homepage {
     margin-top: 0;
   }
@@ -445,9 +503,31 @@ body {
     box-shadow: gold 2px 2px 6px;
   }
   .book-grid {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(auto-fill, 200px);
     justify-content: center;
-    align-items: center;
+    padding-right: 16px;
+  }
+  .book-card {
+    height: 100%;
+    width: 100%;
+    min-height: 12rem;
+  }
+  .book-card .book-title {
+    letter-spacing: normal;
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+  .book-card .book-author {
+    display: none !important;
+  }
+  .book-title::after {
+    width: 80%;
+  }
+  .add-book-card {
+    width: 100%;
+    min-height: 12rem;
+    height: 100%;
   }
 }

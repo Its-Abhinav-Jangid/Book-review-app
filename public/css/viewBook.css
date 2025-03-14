@@ -537,3 +537,71 @@ textarea::-webkit-scrollbar-track {
   left: 0;
   right: 0;
 }
+@media (max-width: 600px) {
+  .page .container {
+    display: flex;
+    margin-top: 0;
+    padding: 0;
+    flex-direction: column;
+  }
+  .category-tags {
+    display: none;
+  }
+  .book-details {
+    justify-content: center;
+    margin-bottom: 3rem;
+    flex-direction: column;
+  }
+  .book-details .right {
+    margin-top: -1rem;
+  }
+  .container .left-container {
+    flex: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .container .right-container {
+    margin-left: 2rem;
+  }
+  .title {
+    margin-bottom: 10px;
+    font-size: 28px;
+    padding: 0 4px;
+  }
+  .book-details h3 {
+    justify-content: flex-start;
+    width: auto;
+
+    display: flex;
+    gap: 10px;
+  }
+  .delete-modal {
+    width: 100%;
+  }
+  .modal {
+    overflow: visible;
+    height: 100%;
+    padding: 0 20px;
+  }
+  .modal-title {
+    margin-bottom: 10px !important;
+  }
+  .modal-content {
+    padding: 0;
+    height: 100%;
+
+    position: relative;
+    bottom: -35px;
+  }
+  .book-description p,
+  .book-summary p,
+  .book-notes p {
+    word-wrap: break-word;
+  }
+  .book-cover {
+    aspect-ratio: 9 / 16;
+    height: 28rem;
+    width: auto;
+  }
+}

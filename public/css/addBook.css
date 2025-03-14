@@ -39,32 +39,36 @@ h2 {
 
 .search-bar {
   display: flex;
-  gap: 10px;
+  justify-content: space-between;
+  gap: 8px;
   margin-bottom: 20px;
 }
 
 #bookTitle {
   flex-grow: 1;
-  padding: 12px 0;
-
+  padding: 12px 10px;
+  border-radius: 5px;
   outline: none;
+  border: none;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
 }
 .bookTitleField {
   margin-top: 1rem;
 }
 
 #searchButton {
-  padding: 12px;
+  padding: 12px 14px;
   border: none;
   border-radius: 5px;
-  background-color: #6200ee;
+  background-color: #007bff;
   color: #fff;
   cursor: pointer;
   transition: background-color 0.2s;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
 }
 
 #searchButton:hover {
-  background-color: #3700b3;
+  background-color: #0056b3;
 }
 
 .results-container {
@@ -73,7 +77,7 @@ h2 {
   flex-direction: column;
   gap: 15px;
   margin-top: 20px;
-  max-height: 68vh;
+  max-height: 62vh;
   overflow-y: auto; /* Enable vertical scrolling */
 }
 
@@ -100,7 +104,7 @@ h2 {
 }
 
 .book-cover {
-  width: 150px; /* Adjust to the preferred size */
+  width: 80%; /* Adjust to the preferred size */
   height: auto;
   object-fit: cover;
   border-radius: 8px;
@@ -125,10 +129,17 @@ h2 {
   margin-bottom: 10px;
 }
 
-.book-description {
+.results-container .book-description {
   font-size: 0.85em;
   color: #cccccc;
   margin-bottom: 10px;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  line-clamp: 5;
+  -webkit-box-orient: vertical; /* Required for line clamping */
+  overflow: hidden; /* Hides the overflowed text */
+  text-overflow: ellipsis; /* Adds "..." at the end */
 }
 
 .btn {
@@ -193,7 +204,7 @@ h2 {
   width: 80%;
   max-width: 600px;
   max-height: 90vh; /* Maximum height of modal */
-  overflow: hidden;
+
   border-radius: 8px;
   z-index: 1000;
   animation: slideUp 0.5s ease-out; /* Add slide-up animation */
@@ -233,7 +244,7 @@ h2 {
 }
 /* Additional Styling for Modal Content */
 .modal .book-details,
-.modal .book-summary,
+.modal .book-description,
 .modal .user-notes,
 .modal .rating {
   margin-top: 20px;
@@ -256,14 +267,14 @@ h2 {
 }
 
 .book-details p,
-.book-summary p {
+.book-description p {
   margin: 5px 0;
 }
-.modal .book-summary h3 {
+.modal .book-description h3 {
   margin-left: 18px;
   font-size: 24px;
 }
-.modal .book-summary p {
+.modal .book-description p {
   padding: 1rem !important;
   line-height: 1.3;
   font-size: 16px; /* Increases font size for better readability */
@@ -476,4 +487,70 @@ textarea::-webkit-scrollbar-track {
   bottom: 0;
   left: 0;
   right: 0;
+}
+@media (max-width: 470px) {
+  .book-cover {
+    width: 120px;
+  }
+  .book-card {
+    padding: 15px 4px;
+  }
+  .book-title {
+    font-size: 16px;
+  }
+  .book-details p {
+    font-size: 12px;
+  }
+  .modal {
+    width: 87%;
+    height: 100%;
+    padding: 8px;
+  }
+  .modal h2#bookTitle {
+    margin-top: 16px;
+    font-size: 24px;
+  }
+  .modal-content {
+    padding: 0;
+    max-height: 100%;
+  }
+
+  .modal .book-description h3 {
+    margin: 12px 0;
+  }
+  .modal .book-description p {
+    padding: 4px !important;
+  }
+  #addBookModal .modal-body {
+    height: 90%;
+  }
+  #addBookModal #addBookForm {
+    height: 100%;
+    position: relative;
+    margin: 0;
+  }
+  #addBookModal .modal-footer {
+    margin: 0;
+    position: absolute;
+    bottom: 0;
+    right: 7px;
+  }
+  .add-book-container {
+    margin-top: 0;
+    position: relative;
+    top: -12px;
+  }
+  .add-button {
+    margin-top: 10px;
+  }
+  .results-container .book-description {
+    margin-top: 10px;
+    display: -webkit-box;
+
+    -webkit-line-clamp: 3 !important;
+    line-clamp: 3 !important;
+    -webkit-box-orient: vertical; /* Required for line clamping */
+    overflow: hidden; /* Hides the overflowed text */
+    text-overflow: ellipsis; /* Adds "..." at the end */
+  }
 }

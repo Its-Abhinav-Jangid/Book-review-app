@@ -102,19 +102,6 @@ async function fetchQuote() {
   }
 }
 
-function truncateDescription(books) {
-  return books.map((book) => {
-    if (
-      book.volumeInfo.description &&
-      book.volumeInfo.description.length > 250
-    ) {
-      book.volumeInfo.shortDescription =
-        book.volumeInfo.description.slice(0, 250) + "...";
-    }
-    return book;
-  });
-}
-
 async function fetchBooksAPI(query) {
   try {
     const startIndex = Math.floor(Math.random() * 50); // Random start
@@ -129,12 +116,15 @@ async function fetchBooksAPI(query) {
     );
 
     let books = response.data.items;
-    books = truncateDescription(books);
-    books.map((book) => {
-      book["string"] = JSON.stringify(book);
-    });
+    if (books) {
+      books.map((book) => {
+        book["string"] = JSON.stringify(book);
+      });
 
-    return books;
+      return books;
+    } else {
+      return [];
+    }
   } catch (error) {
     console.error("Error fetching books:", error.message);
     res.status(500).send("Error fetching books");
@@ -325,21 +315,220 @@ app.get("/add-book", async (req, res) => {
     try {
       const books = await fetchBooksAPI();
       // const testData = [
-      // 	{
-      // 		volumeInfo: {
-      // 			averageRating: 4,
-      // 			title: "The pragmatic programmer",
-      // 			authors: ["Andrew Hunt", "David Thomas"],
-      // 			categories: ["programming"],
-      // 			publishedDate: "2018-12-2",
-      // 			pageCount: 300,
-      // 			publisher: "Pearson",
-      // 			description:
-      // 				"lorem ipsum bla bla fdfgshed gf dfyg gfsdf ydgydsfd f gfgdyf dsgfdsg gfydyfds dgf sdgfusgufgu dsg udgfu dsgugudsgfugdus fsd gfugdsfgsd fus gdsufgudsfg udsgf dsfgsuidgfgdsuf dsfugsd ugfdsufg sdugfuisdgfui dgsuf dsgfud gfugdusfggdsgfdgsufds dsgfugs dfgsd fdgusg fuds",
-      // 			industryIdentifiers: [{ identifier: "dfsgsdgd" }],
-      // 		},
-      // 	},
+      //   {
+      //     volumeInfo: {
+      //       averageRating: 4,
+      //       title: "The pragmatic programmer",
+      //       authors: ["Andrew Hunt", "David Thomas"],
+      //       categories: ["programming"],
+      //       publishedDate: "2018-12-2",
+      //       pageCount: 300,
+      //       publisher: "Pearson",
+      //       description:
+      //         "lorem ipsum bla bla fdfgshed gf dfyg gfsdf ydgydsfd f gfgdyf dsgfdsg gfydyfds dgf sdgfusgufgu dsg udgfu dsgugudsgfugdus fsd gfugdsfgsd fus gdsufgudsfg udsgf dsfgsuidgfgdsuf dsfugsd ugfdsufg sdugfuisdgfui dgsuf dsgfud gfugdusfggdsgfdgsufds dsgfugs dfgsd fdgusg fuds",
+      //       industryIdentifiers: [{ identifier: "dfsgsdgd" }],
+      //     },
+      //   },
+      //   {
+      //     volumeInfo: {
+      //       averageRating: 4,
+      //       title: "The pragmatic programmer",
+      //       authors: ["Andrew Hunt", "David Thomas"],
+      //       categories: ["programming"],
+      //       publishedDate: "2018-12-2",
+      //       pageCount: 300,
+      //       publisher: "Pearson",
+      //       description:
+      //         "lorem ipsum bla bla fdfgshed gf dfyg gfsdf ydgydsfd f gfgdyf dsgfdsg gfydyfds dgf sdgfusgufgu dsg udgfu dsgugudsgfugdus fsd gfugdsfgsd fus gdsufgudsfg udsgf dsfgsuidgfgdsuf dsfugsd ugfdsufg sdugfuisdgfui dgsuf dsgfud gfugdusfggdsgfdgsufds dsgfugs dfgsd fdgusg fuds",
+      //       industryIdentifiers: [{ identifier: "dfsgsdgd" }],
+      //     },
+      //   },
+      //   {
+      //     volumeInfo: {
+      //       averageRating: 4,
+      //       title: "The pragmatic programmer",
+      //       authors: ["Andrew Hunt", "David Thomas"],
+      //       categories: ["programming"],
+      //       publishedDate: "2018-12-2",
+      //       pageCount: 300,
+      //       publisher: "Pearson",
+      //       description:
+      //         "lorem ipsum bla bla fdfgshed gf dfyg gfsdf ydgydsfd f gfgdyf dsgfdsg gfydyfds dgf sdgfusgufgu dsg udgfu dsgugudsgfugdus fsd gfugdsfgsd fus gdsufgudsfg udsgf dsfgsuidgfgdsuf dsfugsd ugfdsufg sdugfuisdgfui dgsuf dsgfud gfugdusfggdsgfdgsufds dsgfugs dfgsd fdgusg fuds",
+      //       industryIdentifiers: [{ identifier: "dfsgsdgd" }],
+      //     },
+      //   },
+      //   {
+      //     volumeInfo: {
+      //       averageRating: 4,
+      //       title: "The pragmatic programmer",
+      //       authors: ["Andrew Hunt", "David Thomas"],
+      //       categories: ["programming"],
+      //       publishedDate: "2018-12-2",
+      //       pageCount: 300,
+      //       publisher: "Pearson",
+      //       description:
+      //         "lorem ipsum bla bla fdfgshed gf dfyg gfsdf ydgydsfd f gfgdyf dsgfdsg gfydyfds dgf sdgfusgufgu dsg udgfu dsgugudsgfugdus fsd gfugdsfgsd fus gdsufgudsfg udsgf dsfgsuidgfgdsuf dsfugsd ugfdsufg sdugfuisdgfui dgsuf dsgfud gfugdusfggdsgfdgsufds dsgfugs dfgsd fdgusg fuds",
+      //       industryIdentifiers: [{ identifier: "dfsgsdgd" }],
+      //     },
+      //   },
+      //   {
+      //     volumeInfo: {
+      //       averageRating: 4,
+      //       title: "The pragmatic programmer",
+      //       authors: ["Andrew Hunt", "David Thomas"],
+      //       categories: ["programming"],
+      //       publishedDate: "2018-12-2",
+      //       pageCount: 300,
+      //       publisher: "Pearson",
+      //       description:
+      //         "lorem ipsum bla bla fdfgshed gf dfyg gfsdf ydgydsfd f gfgdyf dsgfdsg gfydyfds dgf sdgfusgufgu dsg udgfu dsgugudsgfugdus fsd gfugdsfgsd fus gdsufgudsfg udsgf dsfgsuidgfgdsuf dsfugsd ugfdsufg sdugfuisdgfui dgsuf dsgfud gfugdusfggdsgfdgsufds dsgfugs dfgsd fdgusg fuds",
+      //       industryIdentifiers: [{ identifier: "dfsgsdgd" }],
+      //     },
+      //   },
+      //   {
+      //     volumeInfo: {
+      //       averageRating: 4,
+      //       title: "The pragmatic programmer",
+      //       authors: ["Andrew Hunt", "David Thomas"],
+      //       categories: ["programming"],
+      //       publishedDate: "2018-12-2",
+      //       pageCount: 300,
+      //       publisher: "Pearson",
+      //       description:
+      //         "lorem ipsum bla bla fdfgshed gf dfyg gfsdf ydgydsfd f gfgdyf dsgfdsg gfydyfds dgf sdgfusgufgu dsg udgfu dsgugudsgfugdus fsd gfugdsfgsd fus gdsufgudsfg udsgf dsfgsuidgfgdsuf dsfugsd ugfdsufg sdugfuisdgfui dgsuf dsgfud gfugdusfggdsgfdgsufds dsgfugs dfgsd fdgusg fuds",
+      //       industryIdentifiers: [{ identifier: "dfsgsdgd" }],
+      //     },
+      //   },
+      //   {
+      //     volumeInfo: {
+      //       averageRating: 4,
+      //       title: "The pragmatic programmer",
+      //       authors: ["Andrew Hunt", "David Thomas"],
+      //       categories: ["programming"],
+      //       publishedDate: "2018-12-2",
+      //       pageCount: 300,
+      //       publisher: "Pearson",
+      //       description:
+      //         "lorem ipsum bla bla fdfgshed gf dfyg gfsdf ydgydsfd f gfgdyf dsgfdsg gfydyfds dgf sdgfusgufgu dsg udgfu dsgugudsgfugdus fsd gfugdsfgsd fus gdsufgudsfg udsgf dsfgsuidgfgdsuf dsfugsd ugfdsufg sdugfuisdgfui dgsuf dsgfud gfugdusfggdsgfdgsufds dsgfugs dfgsd fdgusg fuds",
+      //       industryIdentifiers: [{ identifier: "dfsgsdgd" }],
+      //     },
+      //   },
+      //   {
+      //     volumeInfo: {
+      //       averageRating: 4,
+      //       title: "The pragmatic programmer",
+      //       authors: ["Andrew Hunt", "David Thomas"],
+      //       categories: ["programming"],
+      //       publishedDate: "2018-12-2",
+      //       pageCount: 300,
+      //       publisher: "Pearson",
+      //       description:
+      //         "lorem ipsum bla bla fdfgshed gf dfyg gfsdf ydgydsfd f gfgdyf dsgfdsg gfydyfds dgf sdgfusgufgu dsg udgfu dsgugudsgfugdus fsd gfugdsfgsd fus gdsufgudsfg udsgf dsfgsuidgfgdsuf dsfugsd ugfdsufg sdugfuisdgfui dgsuf dsgfud gfugdusfggdsgfdgsufds dsgfugs dfgsd fdgusg fuds",
+      //       industryIdentifiers: [{ identifier: "dfsgsdgd" }],
+      //     },
+      //   },
+      //   {
+      //     volumeInfo: {
+      //       averageRating: 4,
+      //       title: "The pragmatic programmer",
+      //       authors: ["Andrew Hunt", "David Thomas"],
+      //       categories: ["programming"],
+      //       publishedDate: "2018-12-2",
+      //       pageCount: 300,
+      //       publisher: "Pearson",
+      //       description:
+      //         "lorem ipsum bla bla fdfgshed gf dfyg gfsdf ydgydsfd f gfgdyf dsgfdsg gfydyfds dgf sdgfusgufgu dsg udgfu dsgugudsgfugdus fsd gfugdsfgsd fus gdsufgudsfg udsgf dsfgsuidgfgdsuf dsfugsd ugfdsufg sdugfuisdgfui dgsuf dsgfud gfugdusfggdsgfdgsufds dsgfugs dfgsd fdgusg fuds",
+      //       industryIdentifiers: [{ identifier: "dfsgsdgd" }],
+      //     },
+      //   },
+      //   {
+      //     volumeInfo: {
+      //       averageRating: 4,
+      //       title: "The pragmatic programmer",
+      //       authors: ["Andrew Hunt", "David Thomas"],
+      //       categories: ["programming"],
+      //       publishedDate: "2018-12-2",
+      //       pageCount: 300,
+      //       publisher: "Pearson",
+      //       description:
+      //         "lorem ipsum bla bla fdfgshed gf dfyg gfsdf ydgydsfd f gfgdyf dsgfdsg gfydyfds dgf sdgfusgufgu dsg udgfu dsgugudsgfugdus fsd gfugdsfgsd fus gdsufgudsfg udsgf dsfgsuidgfgdsuf dsfugsd ugfdsufg sdugfuisdgfui dgsuf dsgfud gfugdusfggdsgfdgsufds dsgfugs dfgsd fdgusg fuds",
+      //       industryIdentifiers: [{ identifier: "dfsgsdgd" }],
+      //     },
+      //   },
+      //   {
+      //     volumeInfo: {
+      //       averageRating: 4,
+      //       title: "The pragmatic programmer",
+      //       authors: ["Andrew Hunt", "David Thomas"],
+      //       categories: ["programming"],
+      //       publishedDate: "2018-12-2",
+      //       pageCount: 300,
+      //       publisher: "Pearson",
+      //       description:
+      //         "lorem ipsum bla bla fdfgshed gf dfyg gfsdf ydgydsfd f gfgdyf dsgfdsg gfydyfds dgf sdgfusgufgu dsg udgfu dsgugudsgfugdus fsd gfugdsfgsd fus gdsufgudsfg udsgf dsfgsuidgfgdsuf dsfugsd ugfdsufg sdugfuisdgfui dgsuf dsgfud gfugdusfggdsgfdgsufds dsgfugs dfgsd fdgusg fuds",
+      //       industryIdentifiers: [{ identifier: "dfsgsdgd" }],
+      //     },
+      //   },
+      //   {
+      //     volumeInfo: {
+      //       averageRating: 4,
+      //       title: "The pragmatic programmer",
+      //       authors: ["Andrew Hunt", "David Thomas"],
+      //       categories: ["programming"],
+      //       publishedDate: "2018-12-2",
+      //       pageCount: 300,
+      //       publisher: "Pearson",
+      //       description:
+      //         "lorem ipsum bla bla fdfgshed gf dfyg gfsdf ydgydsfd f gfgdyf dsgfdsg gfydyfds dgf sdgfusgufgu dsg udgfu dsgugudsgfugdus fsd gfugdsfgsd fus gdsufgudsfg udsgf dsfgsuidgfgdsuf dsfugsd ugfdsufg sdugfuisdgfui dgsuf dsgfud gfugdusfggdsgfdgsufds dsgfugs dfgsd fdgusg fuds",
+      //       industryIdentifiers: [{ identifier: "dfsgsdgd" }],
+      //     },
+      //   },
+      //   {
+      //     volumeInfo: {
+      //       averageRating: 4,
+      //       title: "The pragmatic programmer",
+      //       authors: ["Andrew Hunt", "David Thomas"],
+      //       categories: ["programming"],
+      //       publishedDate: "2018-12-2",
+      //       pageCount: 300,
+      //       publisher: "Pearson",
+      //       description:
+      //         "lorem ipsum bla bla fdfgshed gf dfyg gfsdf ydgydsfd f gfgdyf dsgfdsg gfydyfds dgf sdgfusgufgu dsg udgfu dsgugudsgfugdus fsd gfugdsfgsd fus gdsufgudsfg udsgf dsfgsuidgfgdsuf dsfugsd ugfdsufg sdugfuisdgfui dgsuf dsgfud gfugdusfggdsgfdgsufds dsgfugs dfgsd fdgusg fuds",
+      //       industryIdentifiers: [{ identifier: "dfsgsdgd" }],
+      //     },
+      //   },
+      //   {
+      //     volumeInfo: {
+      //       averageRating: 4,
+      //       title: "The pragmatic programmer",
+      //       authors: ["Andrew Hunt", "David Thomas"],
+      //       categories: ["programming"],
+      //       publishedDate: "2018-12-2",
+      //       pageCount: 300,
+      //       publisher: "Pearson",
+      //       description:
+      //         "lorem ipsum bla bla fdfgshed gf dfyg gfsdf ydgydsfd f gfgdyf dsgfdsg gfydyfds dgf sdgfusgufgu dsg udgfu dsgugudsgfugdus fsd gfugdsfgsd fus gdsufgudsfg udsgf dsfgsuidgfgdsuf dsfugsd ugfdsufg sdugfuisdgfui dgsuf dsgfud gfugdusfggdsgfdgsufds dsgfugs dfgsd fdgusg fuds",
+      //       industryIdentifiers: [{ identifier: "dfsgsdgd" }],
+      //     },
+      //   },
+      //   {
+      //     volumeInfo: {
+      //       averageRating: 4,
+      //       title: "The pragmatic programmer",
+      //       authors: ["Andrew Hunt", "David Thomas"],
+      //       categories: ["programming"],
+      //       publishedDate: "2018-12-2",
+      //       pageCount: 300,
+      //       publisher: "Pearson",
+      //       description:
+      //         "lorem ipsum bla bla fdfgshed gf dfyg gfsdf ydgydsfd f gfgdyf dsgfdsg gfydyfds dgf sdgfusgufgu dsg udgfu dsgugudsgfugdus fsd gfugdsfgsd fus gdsufgudsfg udsgf dsfgsuidgfgdsuf dsfugsd ugfdsufg sdugfuisdgfui dgsuf dsgfud gfugdusfggdsgfdgsufds dsgfugs dfgsd fdgusg fuds",
+      //       industryIdentifiers: [{ identifier: "dfsgsdgd" }],
+      //     },
+      //   },
       // ];
+      // testData.map((book) => {
+      //   book["string"] = JSON.stringify(book);
+      // });
 
       res.render("addBook.ejs", { books: books });
     } catch (error) {
